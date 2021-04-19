@@ -11,14 +11,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
+class LiabilityHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
     companion object {
 
         private const val DATABASE_VERSION = 1
-        private const val DATABASE_NAME = "FZAssets.db"
-        private const val TABLE_ASSETS = "assets"
+        private const val DATABASE_NAME = "FZLiabilities.db"
+        private const val TABLE_LIABILITIES = "liabilities"
 
         private const val KEY_ID = "_id"
         private const val KEY_NAME = "name"
@@ -30,53 +30,53 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createAssetTable =
-                ("CREATE TABLE $TABLE_ASSETS($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_VALUE TEXT,$KEY_NOTE TEXT,$KEY_COLOUR TEXT,$KEY_DATE TEXT)")
-        db?.execSQL(createAssetTable)
+        val createLiabilityTable =
+                ("CREATE TABLE $TABLE_LIABILITIES($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_VALUE TEXT,$KEY_NOTE TEXT,$KEY_COLOUR TEXT,$KEY_DATE TEXT)")
+        db?.execSQL(createLiabilityTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_ASSETS")
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_LIABILITIES")
         onCreate(db)
     }
 
-    fun addAsset(asset: AssetModel): Long {
+    fun addLiability(liability: LiabilityModel): Long {
         val values = ContentValues()
-        values.put(KEY_NAME, asset.name)
-        values.put(KEY_VALUE, asset.value)
-        values.put(KEY_NOTE, asset.note)
-        values.put(KEY_COLOUR, asset.colour)
-        values.put(KEY_DATE, asset.date)
+        values.put(KEY_NAME, liability.name)
+        values.put(KEY_VALUE, liability.value)
+        values.put(KEY_NOTE, liability.note)
+        values.put(KEY_COLOUR, liability.colour)
+        values.put(KEY_DATE, liability.date)
         val db = this.writableDatabase
-        val success = db.insert(TABLE_ASSETS, null, values)
+        val success = db.insert(TABLE_LIABILITIES, null, values)
         db.close()
         return success
     }
 
-    fun updateAsset(asset: AssetModel): Int {
+    fun updateLiability(liability: LiabilityModel): Int {
         val values = ContentValues()
-        values.put(KEY_NAME, asset.name)
-        values.put(KEY_VALUE, asset.value)
-        values.put(KEY_NOTE, asset.note)
-        values.put(KEY_COLOUR, asset.colour)
-        values.put(KEY_DATE, asset.date)
+        values.put(KEY_NAME, liability.name)
+        values.put(KEY_VALUE, liability.value)
+        values.put(KEY_NOTE, liability.note)
+        values.put(KEY_COLOUR, liability.colour)
+        values.put(KEY_DATE, liability.date)
         val db = this.writableDatabase
-        val success = db.update(TABLE_ASSETS, values, KEY_ID + "=" + asset.id, null)
+        val success = db.update(TABLE_LIABILITIES, values, KEY_ID + "=" + liability.id, null)
         db.close()
         return success
     }
 
-    fun deleteAsset(asset: AssetModel): Int {
+    fun deleteLiability(liability: LiabilityModel): Int {
         val db = this.writableDatabase
-        val success = db.delete(TABLE_ASSETS, KEY_ID + "=" + asset.id, null)
+        val success = db.delete(TABLE_LIABILITIES, KEY_ID + "=" + liability.id, null)
         db.close()
         return success
     }
 
-    fun getAllAssets(): ArrayList<AssetModel> {
-        val list = ArrayList<AssetModel>()
+    fun getAllLiabilities(): ArrayList<LiabilityModel> {
+        val list = ArrayList<LiabilityModel>()
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_ASSETS", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_LIABILITIES", null)
 
         var id: Int
         var name: String
@@ -93,7 +93,7 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 note = cursor.getString(cursor.getColumnIndex(KEY_NOTE))
                 colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                val asset = AssetModel(
+                val liability = LiabilityModel(
                         id = id,
                         name = name,
                         value = value,
@@ -101,7 +101,7 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                         colour = colour,
                         date = date
                 )
-                list.add(asset)
+                list.add(liability)
             } while (cursor.moveToNext())
         }
 

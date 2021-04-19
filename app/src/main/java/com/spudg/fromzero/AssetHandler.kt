@@ -23,14 +23,15 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         private const val KEY_ID = "_id"
         private const val KEY_NAME = "name"
         private const val KEY_VALUE = "value"
-        private const val KEY_TIME = "time"
         private const val KEY_NOTE = "note"
+        private const val KEY_COLOUR = "colour"
+        private const val KEY_DATE = "date"
 
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTransactionsTable =
-                ("CREATE TABLE $TABLE_ASSETS($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_VALUE TEXT,$KEY_TIME TEXT,$KEY_NOTE TEXT)")
+                ("CREATE TABLE $TABLE_ASSETS($KEY_ID INTEGER PRIMARY KEY,$KEY_NAME TEXT,$KEY_VALUE TEXT,$KEY_NOTE TEXT,$KEY_COLOUR TEXT,$KEY_DATE TEXT)")
         db?.execSQL(createTransactionsTable)
     }
 
@@ -43,8 +44,9 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val values = ContentValues()
         values.put(KEY_NAME, asset.name)
         values.put(KEY_VALUE, asset.value)
-        values.put(KEY_TIME, asset.time)
         values.put(KEY_NOTE, asset.note)
+        values.put(KEY_COLOUR, asset.colour)
+        values.put(KEY_DATE, asset.date)
         val db = this.writableDatabase
         val success = db.insert(TABLE_ASSETS, null, values)
         db.close()
@@ -55,8 +57,9 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val values = ContentValues()
         values.put(KEY_NAME, asset.name)
         values.put(KEY_VALUE, asset.value)
-        values.put(KEY_TIME, asset.time)
         values.put(KEY_NOTE, asset.note)
+        values.put(KEY_COLOUR, asset.colour)
+        values.put(KEY_DATE, asset.date)
         val db = this.writableDatabase
         val success = db.update(TABLE_ASSETS, values, KEY_ID + "=" + asset.id, null)
         db.close()
@@ -78,22 +81,25 @@ class AssetHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         var id: Int
         var name: String
         var value: String
-        var time: String
         var note: String
+        var colour: String
+        var date: String
 
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
                 name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
                 value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
-                time = cursor.getString(cursor.getColumnIndex(KEY_TIME))
                 note = cursor.getString(cursor.getColumnIndex(KEY_NOTE))
+                colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
+                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
                 val asset = AssetModel(
                         id = id,
                         name = name,
                         value = value,
-                        time = time,
-                        note = note
+                        note = note,
+                        colour = colour,
+                        date = date
                 )
                 list.add(asset)
             } while (cursor.moveToNext())

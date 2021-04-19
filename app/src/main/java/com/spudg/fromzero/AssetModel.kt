@@ -4,6 +4,7 @@ class AssetModel (
     val id: Int,
     val name: String,
     val value: String,
-    val time: String,
-    val note: String
+    val note: String,
+    val colour: String,
+    val date: String
 )

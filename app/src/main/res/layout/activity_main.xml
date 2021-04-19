@@ -89,13 +89,13 @@
             app:layout_constraintVertical_weight="4">
 
             <Button
-                android:id="@+id/addNetWorth"
+                android:id="@+id/addAssetLiability"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginBottom="25dp"
                 android:background="#99FFFFFF"
                 android:fontFamily="@font/open_sans_light"
-                android:text="Update Net Worth"
+                android:text="Add Asset / Liability"
                 android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

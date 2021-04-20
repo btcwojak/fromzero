@@ -5,6 +5,8 @@ class Globals {
 
     companion object {
 
+        var alSelected: Int = 0
+
         var colourSelected: Int = 0
 
         var monthsShortArray: Array<String> = arrayOf(

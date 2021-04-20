@@ -1,6 +1,7 @@
 package com.spudg.fromzero
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -53,15 +54,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getAssetList(): ArrayList<AssetModel> {
-        val dbHandler = AssetHandler(this, null)
+    private fun getAssetList(): ArrayList<ALModel> {
+        val dbHandler = ALHandler(this, null)
         val result = dbHandler.getAllAssets()
         dbHandler.close()
         return result
     }
 
-    private fun getLiabilityList(): ArrayList<LiabilityModel> {
-        val dbHandler = LiabilityHandler(this, null)
+    private fun getLiabilityList(): ArrayList<ALModel> {
+        val dbHandler = ALHandler(this, null)
         val result = dbHandler.getAllLiabilities()
         dbHandler.close()
         return result
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
             val manager = LinearLayoutManager(this)
             bindingMain.rvAssets.layoutManager = manager
-            val assetAdapter = AssetAdapter(this, getAssetList())
+            val assetAdapter = ALAdapter(this, getAssetList())
             bindingMain.rvAssets.adapter = assetAdapter
         } else {
             bindingMain.rvAssets.visibility = View.GONE
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
             val manager = LinearLayoutManager(this)
             bindingMain.rvLiabilities.layoutManager = manager
-            val liabilityAdapter = LiabilityAdapter(this, getLiabilityList())
+            val liabilityAdapter = ALAdapter(this, getLiabilityList())
             bindingMain.rvLiabilities.adapter = liabilityAdapter
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE
@@ -207,10 +208,15 @@ class MainActivity : AppCompatActivity() {
 
             if (name.isNotEmpty() && value.isNotEmpty()) {
 
-                val assetHandler = AssetHandler(this, null)
-                assetHandler.addAsset(AssetModel(0, name, value, note, colour, date))
+                val alHandler = ALHandler(this, null)
+                val valuationHandler = ValuationHandler(this, null)
+
+                alHandler.addAL(ALModel(0, 0, name, note, colour))
+                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), value, date))
 
                 Toast.makeText(this, "Asset added.", Toast.LENGTH_LONG).show()
+
+                setUpAssetList()
                 addDialog.dismiss()
 
             } else {
@@ -337,10 +343,15 @@ class MainActivity : AppCompatActivity() {
 
             if (name.isNotEmpty() && value.isNotEmpty()) {
 
-                val liabilityHandler = LiabilityHandler(this, null)
-                liabilityHandler.addLiability(LiabilityModel(0, name, value, note, colour, date))
+                val alHandler = ALHandler(this, null)
+                val valuationHandler = ValuationHandler(this, null)
+
+                alHandler.addAL(ALModel(0, 0, name, note, colour))
+                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), value, date))
 
                 Toast.makeText(this, "Liability added.", Toast.LENGTH_LONG).show()
+
+                setUpLiabilityList()
                 addDialog.dismiss()
 
             } else {
@@ -354,6 +365,18 @@ class MainActivity : AppCompatActivity() {
         bindingAddLiability.tvCancel.setOnClickListener {
             addDialog.dismiss()
         }
+    }
+
+    fun selectAL(al: ALModel) {
+        Globals.alSelected = al.id
+        val intent = Intent(this, ValuationActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    fun getALValue(al: ALModel): String {
+        val valuationHandler = ValuationHandler(this, null)
+        return valuationHandler.getLatestValuationForAL(al.id)
     }
 
 

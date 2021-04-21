@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -103,17 +104,12 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
     fun getLatestValuationForAL(alFilter: Int): String {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS WHERE $KEY_AL IS $alFilter", null)
 
-        var id: Int
         var value = "0"
 
         if (cursor.moveToFirst()) {
-            id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
             value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
-            if (alFilter == id) {
-                return value
-            }
         }
 
         cursor.close()

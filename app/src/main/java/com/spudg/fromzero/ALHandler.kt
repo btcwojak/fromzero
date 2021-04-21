@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -151,9 +152,11 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         var id = 0
 
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToLast()) {
             id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+
         }
+        Log.e("test",id.toString())
 
         cursor.close()
         db.close()

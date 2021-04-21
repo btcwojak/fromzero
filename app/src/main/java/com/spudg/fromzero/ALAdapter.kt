@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spudg.fromzero.databinding.AssetLiabilityRowBinding
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,11 +26,13 @@ class ALAdapter(private val context: Context, private val items: ArrayList<ALMod
 
     override fun onBindViewHolder(holder: ALViewHolder, position: Int) {
 
+        val formatter: NumberFormat = DecimalFormat("#,##0.00")
+
         with(holder) {
             val al = items[position]
 
             if (context is MainActivity) {
-                binding.value.text = context.getALValue(al)
+                binding.value.text = formatter.format(context.getALValue(al).toFloat())
             }
             binding.colour.setBackgroundColor(al.colour.toInt())
             binding.name.text = al.name

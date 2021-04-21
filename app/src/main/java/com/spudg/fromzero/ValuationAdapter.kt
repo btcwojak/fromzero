@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spudg.fromzero.databinding.AssetLiabilityRowBinding
 import com.spudg.fromzero.databinding.ValuationRowBinding
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,10 +26,12 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
 
     override fun onBindViewHolder(holder: ValuationViewHolder, position: Int) {
 
+        val formatter: NumberFormat = DecimalFormat("#,##0.00")
+
         with(holder) {
             val valuation = items[position]
 
-            binding.value.text = valuation.value
+            binding.value.text = formatter.format(valuation.value.toFloat())
             binding.date.text = valuation.date
 
             binding.mainRowLayout.setOnClickListener {

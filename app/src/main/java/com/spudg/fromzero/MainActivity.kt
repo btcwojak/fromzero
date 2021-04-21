@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity() {
                 val alHandler = ALHandler(this, null)
                 val valuationHandler = ValuationHandler(this, null)
 
-                alHandler.addAL(ALModel(0, 0, name, note, colour))
+                alHandler.addAL(ALModel(0, 1, name, note, colour))
                 valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), value, date))
 
                 Toast.makeText(this, "Asset added.", Toast.LENGTH_LONG).show()

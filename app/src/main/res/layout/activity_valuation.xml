@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/about_myzo_heading"
+                android:id="@+id/alTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
@@ -81,7 +81,7 @@
                 app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
-                android:id="@+id/assetTitle"
+                android:id="@+id/placeholderForChart"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="10dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/assetTitle">
+                app:layout_constraintTop_toBottomOf="@id/placeholderForChart">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvValuations"

@@ -98,6 +98,8 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         cursor.close()
         db.close()
 
+        list.sortByDescending { it.date.toFloat() }
+
         return list
 
     }
@@ -108,7 +110,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
         var value = "0"
 
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToLast()) {
             value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
         }
 

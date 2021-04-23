@@ -77,29 +77,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintVertical_weight="4">
-
-            <Button
-                android:id="@+id/addAssetLiability"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginBottom="25dp"
-                android:background="#99FFFFFF"
-                android:fontFamily="@font/open_sans_light"
-                android:text="Add Asset / Liability"
-                android:textColor="@color/colorAccent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/assetTitle"
@@ -124,6 +111,7 @@
                     android:id="@+id/rvAssets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:clipToPadding="false"
                     android:paddingBottom="20dp" />
 
@@ -152,6 +140,7 @@
                     android:id="@+id/rvLiabilities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:clipToPadding="false"
                     android:paddingBottom="80dp" />
 
@@ -174,9 +163,24 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/addAssetLiability"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginBottom="25dp"
+                android:background="#99FFFFFF"
+                android:fontFamily="@font/open_sans_light"
+                android:text="Add Asset / Liability"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
 

@@ -6,12 +6,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spudg.fromzero.databinding.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.*
 
 
@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bindingDMYPicker: DayMonthYearPickerBinding
 
+    private val gbpFormatter: NumberFormat = DecimalFormat("#,##0")
+    private val gbpFormatterP: NumberFormat = DecimalFormat("#,##0.00")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMain = ActivityMainBinding.inflate(layoutInflater)
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         setUpAssetList()
         setUpLiabilityList()
+        setUpNetWorthHeading()
 
         bindingMain.addAssetLiability.setOnClickListener {
             val assetLiabilityDialog = Dialog(this, R.style.Theme_Dialog)
@@ -53,6 +57,23 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun setUpNetWorthHeading() {
+
+        val alHandler = ALHandler(this, null)
+        val valuationHandler = ValuationHandler(this, null)
+
+        var runningAssetTotal = 0F
+        for (asset in alHandler.getAllAssets()) {
+            runningAssetTotal += valuationHandler.getLatestValuationForAL(asset.id).toFloat()
+        }
+
+        var runningLiabilityTotal = 0F
+        for (liability in alHandler.getAllLiabilities()) {
+            runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
+        }
+        bindingMain.latestNetWorth.text = gbpFormatter.format(runningAssetTotal - runningLiabilityTotal)
     }
 
     private fun getAssetList(): ArrayList<ALModel> {
@@ -79,6 +100,15 @@ class MainActivity : AppCompatActivity() {
             bindingMain.rvAssets.layoutManager = manager
             val assetAdapter = ALAdapter(this, getAssetList())
             bindingMain.rvAssets.adapter = assetAdapter
+
+            val alHandler = ALHandler(this, null)
+            val valuationHandler = ValuationHandler(this, null)
+            var runningAssetTotal = 0F
+            for (asset in alHandler.getAllAssets()) {
+                runningAssetTotal += valuationHandler.getLatestValuationForAL(asset.id).toFloat()
+            }
+            bindingMain.assetTotal.text = gbpFormatterP.format(runningAssetTotal)
+
         } else {
             bindingMain.rvAssets.visibility = View.GONE
             bindingMain.assetTitle.visibility = View.GONE
@@ -102,6 +132,15 @@ class MainActivity : AppCompatActivity() {
             bindingMain.rvLiabilities.layoutManager = manager
             val liabilityAdapter = ALAdapter(this, getLiabilityList())
             bindingMain.rvLiabilities.adapter = liabilityAdapter
+
+            val alHandler = ALHandler(this, null)
+            val valuationHandler = ValuationHandler(this, null)
+            var runningLiabilityTotal = 0F
+            for (liability in alHandler.getAllLiabilities()) {
+                runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
+            }
+            bindingMain.liabilityTotal.text = gbpFormatterP.format(runningLiabilityTotal)
+
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE
             bindingMain.liabilityTitle.visibility = View.GONE
@@ -234,6 +273,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Asset added.", Toast.LENGTH_LONG).show()
 
                 setUpAssetList()
+                setUpNetWorthHeading()
                 addDialog.dismiss()
 
             } else {
@@ -369,6 +409,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Liability added.", Toast.LENGTH_LONG).show()
 
                 setUpLiabilityList()
+                setUpNetWorthHeading()
                 addDialog.dismiss()
 
             } else {
@@ -388,7 +429,6 @@ class MainActivity : AppCompatActivity() {
         Globals.alSelected = al.id
         val intent = Intent(this, ValuationActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     fun getALValue(al: ALModel): String {

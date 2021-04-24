@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
     private fun setUpAssetList() {
         if (getAssetList().size > 0) {
             bindingMain.rvAssets.visibility = View.VISIBLE
+            bindingMain.assetTitle.visibility = View.VISIBLE
+            bindingMain.assetTotal.visibility = View.VISIBLE
             bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
             val manager = LinearLayoutManager(this)
             bindingMain.rvAssets.layoutManager = manager
@@ -79,7 +81,13 @@ class MainActivity : AppCompatActivity() {
             bindingMain.rvAssets.adapter = assetAdapter
         } else {
             bindingMain.rvAssets.visibility = View.GONE
-            bindingMain.tvNoAssetsLiabilities.visibility = View.VISIBLE
+            bindingMain.assetTitle.visibility = View.GONE
+            bindingMain.assetTotal.visibility = View.GONE
+            if (getLiabilityList().size > 0) {
+                bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
+            } else {
+                bindingMain.tvNoAssetsLiabilities.visibility = View.VISIBLE
+            }
         }
 
     }
@@ -87,6 +95,8 @@ class MainActivity : AppCompatActivity() {
     private fun setUpLiabilityList() {
         if (getLiabilityList().size > 0) {
             bindingMain.rvLiabilities.visibility = View.VISIBLE
+            bindingMain.liabilityTitle.visibility = View.VISIBLE
+            bindingMain.liabilityTotal.visibility = View.VISIBLE
             bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
             val manager = LinearLayoutManager(this)
             bindingMain.rvLiabilities.layoutManager = manager
@@ -94,7 +104,13 @@ class MainActivity : AppCompatActivity() {
             bindingMain.rvLiabilities.adapter = liabilityAdapter
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE
-            bindingMain.tvNoAssetsLiabilities.visibility = View.VISIBLE
+            bindingMain.liabilityTitle.visibility = View.GONE
+            bindingMain.liabilityTotal.visibility = View.GONE
+            if (getAssetList().size > 0) {
+                bindingMain.tvNoAssetsLiabilities.visibility = View.GONE
+            } else {
+                bindingMain.tvNoAssetsLiabilities.visibility = View.VISIBLE
+            }
         }
     }
 

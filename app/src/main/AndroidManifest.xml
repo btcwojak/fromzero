@@ -9,8 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/FromZero">
-        <activity android:name=".ValuationActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".ValuationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FromZero"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FromZero">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

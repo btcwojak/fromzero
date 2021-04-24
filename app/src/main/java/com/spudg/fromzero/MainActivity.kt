@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddAsset.date.text = "$dayPicked $monthPicked $yearPicked"
+        bindingAddAsset.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
 
         bindingAddAsset.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddAsset.date.text = "$dayPicked $monthPicked $yearPicked"
+                bindingAddAsset.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -303,7 +303,7 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddLiability.date.text = "$dayPicked $monthPicked $yearPicked"
+        bindingAddLiability.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
 
         bindingAddLiability.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -371,7 +371,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddAsset.date.text = "$dayPicked $monthPicked $yearPicked"
+                bindingAddLiability.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 

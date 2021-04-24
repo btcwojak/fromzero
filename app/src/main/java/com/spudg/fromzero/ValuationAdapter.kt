@@ -29,7 +29,9 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
             val valuation = items[position]
 
             binding.value.text = formatter.format(valuation.value.toFloat())
-            binding.date.text = valuation.date
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = valuation.date.toLong()
+            binding.date.text = "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH))} ${cal.get(Calendar.YEAR)}"
 
             binding.mainRowLayout.setOnClickListener {
                 if (context is MainActivity) {

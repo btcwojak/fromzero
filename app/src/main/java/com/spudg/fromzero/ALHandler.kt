@@ -5,11 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -156,7 +151,7 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
 
         }
-        Log.e("test",id.toString())
+        Log.e("test", id.toString())
 
         cursor.close()
         db.close()

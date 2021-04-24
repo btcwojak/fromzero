@@ -1,15 +1,12 @@
 package com.spudg.fromzero
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spudg.fromzero.databinding.AssetLiabilityRowBinding
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ALAdapter(private val context: Context, private val items: ArrayList<ALModel>) :

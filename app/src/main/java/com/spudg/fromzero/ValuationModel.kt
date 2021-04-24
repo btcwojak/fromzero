@@ -1,6 +1,6 @@
 package com.spudg.fromzero
 
-class ValuationModel (
+class ValuationModel(
         val id: Int,
         val al: Int,
         val value: String,

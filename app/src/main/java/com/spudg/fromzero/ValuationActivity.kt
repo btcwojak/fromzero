@@ -4,12 +4,14 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.spudg.fromzero.databinding.*
+import com.spudg.fromzero.databinding.ActivityValuationBinding
+import com.spudg.fromzero.databinding.DayMonthYearPickerBinding
+import com.spudg.fromzero.databinding.DialogAddValuationBinding
 import java.util.*
 
 class ValuationActivity : AppCompatActivity() {

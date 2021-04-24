@@ -1,6 +1,6 @@
 package com.spudg.fromzero
 
-class ALModel (
+class ALModel(
         val id: Int,
         val al: Int,
         val name: String,

@@ -2,25 +2,22 @@ package com.spudg.fromzero
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.spudg.fromzero.databinding.AssetLiabilityRowBinding
 import com.spudg.fromzero.databinding.ValuationRowBinding
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ValuationAdapter(private val context: Context, private val items: ArrayList<ValuationModel>) :
-    RecyclerView.Adapter<ValuationAdapter.ValuationViewHolder>() {
+        RecyclerView.Adapter<ValuationAdapter.ValuationViewHolder>() {
 
     inner class ValuationViewHolder(val binding: ValuationRowBinding) :
-        RecyclerView.ViewHolder(binding.root)
+            RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ValuationViewHolder {
         val binding = ValuationRowBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+                .inflate(LayoutInflater.from(parent.context), parent, false)
         return ValuationViewHolder(binding)
     }
 

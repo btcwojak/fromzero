@@ -38,12 +38,25 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/assetOrLiability"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/open_sans_light"
+                android:text="Asset"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/alTitle"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
                 android:id="@+id/alTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/open_sans_light"
-                android:text="[asset/liability title]"
+                android:text="AJBell ISA"
+                android:layout_marginTop="20dp"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold"

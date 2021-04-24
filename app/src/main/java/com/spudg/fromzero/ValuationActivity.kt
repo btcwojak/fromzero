@@ -27,6 +27,7 @@ class ValuationActivity : AppCompatActivity() {
         val view = bindingValuation.root
         setContentView(view)
 
+        setUpTitles()
         setUpValuationList(Globals.alSelected)
 
         bindingValuation.addValuation.setOnClickListener {
@@ -37,6 +38,17 @@ class ValuationActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+    }
+
+    private fun setUpTitles() {
+        val dbHandler = ALHandler(this, null)
+        bindingValuation.alTitle.text = dbHandler.getALName(Globals.alSelected)
+        if (dbHandler.isAsset(Globals.alSelected)) {
+            bindingValuation.assetOrLiability.text = "Asset"
+        } else {
+            bindingValuation.assetOrLiability.text = "Liability"
         }
 
     }

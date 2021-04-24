@@ -151,12 +151,44 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
 
         }
-        Log.e("test", id.toString())
 
         cursor.close()
         db.close()
 
         return id
+    }
+
+    fun getALName(id: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_AL WHERE $KEY_ID IS $id", null)
+
+        var name = ""
+
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
+        }
+
+        cursor.close()
+        db.close()
+
+        return name
+    }
+
+    fun isAsset(id: Int): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_AL WHERE $KEY_ID IS $id", null)
+
+        var al = 0
+
+        if (cursor.moveToFirst()) {
+            al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+        }
+
+        cursor.close()
+        db.close()
+
+        return al != 0
+
     }
 
 }

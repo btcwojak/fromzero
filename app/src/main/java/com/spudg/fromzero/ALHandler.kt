@@ -191,4 +191,20 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     }
 
+    fun getALColour(id: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_AL WHERE $KEY_ID IS $id", null)
+
+        var colour = ""
+
+        if (cursor.moveToFirst()) {
+            colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
+        }
+
+        cursor.close()
+        db.close()
+
+        return colour
+    }
+
 }

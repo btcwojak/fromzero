@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             for (asset in alHandler.getAllAssets()) {
                 runningAssetTotal += valuationHandler.getLatestValuationForAL(asset.id).toFloat()
             }
-            bindingMain.assetTotal.text = gbpFormatterP.format(runningAssetTotal)
+            bindingMain.assetTotal.text = gbpFormatter.format(runningAssetTotal)
 
         } else {
             bindingMain.rvAssets.visibility = View.GONE
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             for (liability in alHandler.getAllLiabilities()) {
                 runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
             }
-            bindingMain.liabilityTotal.text = gbpFormatterP.format(runningLiabilityTotal)
+            bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
 
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE

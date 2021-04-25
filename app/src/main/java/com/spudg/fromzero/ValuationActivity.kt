@@ -43,13 +43,17 @@ class ValuationActivity : AppCompatActivity() {
     }
 
     private fun setUpTitles() {
+
         val dbHandler = ALHandler(this, null)
+
         bindingValuation.alTitle.text = dbHandler.getALName(Globals.alSelected)
         if (dbHandler.isAsset(Globals.alSelected)) {
             bindingValuation.assetOrLiability.text = "Asset"
         } else {
             bindingValuation.assetOrLiability.text = "Liability"
         }
+
+        bindingValuation.alColour.setBackgroundColor(dbHandler.getALColour(Globals.alSelected).toInt())
 
     }
 

@@ -31,17 +31,17 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
             binding.value.text = formatter.format(valuation.value.toFloat())
             val cal = Calendar.getInstance()
             cal.timeInMillis = valuation.date.toLong()
-            binding.date.text = "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH))} ${cal.get(Calendar.YEAR)}"
+            binding.date.text = "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH)+1)} ${cal.get(Calendar.YEAR)}"
 
             binding.mainRowLayout.setOnClickListener {
-                if (context is MainActivity) {
-                    //context.updateAsset(asset)
+                if (context is ValuationActivity) {
+                    context.updateValuation(valuation)
                 }
             }
 
             binding.mainRowLayout.setOnLongClickListener {
-                if (context is MainActivity) {
-                    //context.deleteAsset(asset)
+                if (context is ValuationActivity) {
+                    context.deleteValuation(valuation)
                 }
                 true
             }

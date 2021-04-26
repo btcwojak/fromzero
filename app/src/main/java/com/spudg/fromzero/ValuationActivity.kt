@@ -222,7 +222,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingDMYPicker.dmypYear.minValue = 1000
 
             bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked
+            bindingDMYPicker.dmypMonth.value = monthPicked+1
             bindingDMYPicker.dmypYear.value = yearPicked
 
             bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
@@ -245,7 +245,7 @@ class ValuationActivity : AppCompatActivity() {
                     bindingDMYPicker.dmypDay.maxValue = 31
                     bindingDMYPicker.dmypDay.minValue = 1
                 }
-                monthPicked = newVal
+                monthPicked = newVal-1
             }
 
             bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->
@@ -275,7 +275,7 @@ class ValuationActivity : AppCompatActivity() {
         bindingAddValuation.tvAdd.setOnClickListener {
 
             val calendar = Calendar.getInstance()
-            calendar.set(yearPicked, monthPicked - 1, dayPicked)
+            calendar.set(yearPicked, monthPicked, dayPicked)
 
             val value = bindingAddValuation.etValue.text.toString()
             val date = calendar.timeInMillis.toString()
@@ -351,7 +351,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingDMYPicker.dmypYear.minValue = 1000
 
             bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked
+            bindingDMYPicker.dmypMonth.value = monthPicked+1
             bindingDMYPicker.dmypYear.value = yearPicked
 
             bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
@@ -374,7 +374,7 @@ class ValuationActivity : AppCompatActivity() {
                     bindingDMYPicker.dmypDay.maxValue = 31
                     bindingDMYPicker.dmypDay.minValue = 1
                 }
-                monthPicked = newVal
+                monthPicked = newVal-1
             }
 
             bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->

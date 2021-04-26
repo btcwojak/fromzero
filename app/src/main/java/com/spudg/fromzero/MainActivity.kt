@@ -53,6 +53,9 @@ class MainActivity : AppCompatActivity() {
                 addLiability()
                 assetLiabilityDialog.dismiss()
             }
+            bindingAssetLiability.tvCancel.setOnClickListener {
+                assetLiabilityDialog.dismiss()
+            }
             assetLiabilityDialog.show()
         }
 

@@ -207,4 +207,30 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return colour
     }
 
+    fun getAL(idInput: Int): ALModel {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_AL WHERE $KEY_ID IS $idInput", null)
+
+        var alModel = ALModel(0,0,"","","")
+        val id: Int
+        val al: Int
+        val name: String
+        val note: String
+        val colour: String
+
+        if (cursor.moveToFirst()) {
+            id = idInput
+            al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+            name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
+            note = cursor.getString(cursor.getColumnIndex(KEY_NOTE))
+            colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
+            alModel = ALModel(id, al, name, note, colour)
+        }
+
+        cursor.close()
+        db.close()
+
+        return alModel
+    }
+
 }

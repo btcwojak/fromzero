@@ -131,8 +131,42 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
         list.sortBy { it.date.toFloat() }
 
-        return list[list.size-1].value
+        return if (list.size > 0) {
+            list[list.size-1].value
+        } else {
+            "0"
+        }
 
+
+    }
+
+    fun getValuation(idInput: Int): ValuationModel {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS WHERE $KEY_ID is $idInput", null)
+
+        var id: Int
+        var al: Int
+        var value: String
+        var date: String
+        var valuation = ValuationModel(0, 0, "", "")
+
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+            al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+            value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
+            date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
+            valuation = ValuationModel(
+                    id = id,
+                    al = al,
+                    value = value,
+                    date = date
+            )
+        }
+
+        cursor.close()
+        db.close()
+
+        return valuation
     }
 
 }

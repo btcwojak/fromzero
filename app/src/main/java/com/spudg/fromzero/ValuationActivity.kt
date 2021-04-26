@@ -18,6 +18,8 @@ class ValuationActivity : AppCompatActivity() {
     private lateinit var bindingAddValuation: DialogAddValuationBinding
     private lateinit var bindingUpdateValuation: DialogUpdateValuationBinding
     private lateinit var bindingDeleteValuation: DialogDeleteValuationBinding
+    private lateinit var bindingUpdateAL: DialogUpdateAlBinding
+    private lateinit var bindingDeleteAL: DialogDeleteAlBinding
 
     private lateinit var bindingDMYPicker: DayMonthYearPickerBinding
 
@@ -34,11 +36,110 @@ class ValuationActivity : AppCompatActivity() {
             addValuation()
         }
 
+        bindingValuation.alUpdate.setOnClickListener {
+            updateAL()
+        }
+
+        bindingValuation.alDelete.setOnClickListener {
+            deleteAL()
+        }
+
         bindingValuation.backToMainFromAL.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+    }
+
+    private fun deleteAL() {
+        val deleteDialog = Dialog(this, R.style.Theme_Dialog)
+        deleteDialog.setCancelable(false)
+        bindingDeleteAL = DialogDeleteAlBinding.inflate(layoutInflater)
+        val view = bindingDeleteAL.root
+        deleteDialog.setContentView(view)
+        deleteDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val valuationHandler = ValuationHandler(this, null)
+        val alHandler = ALHandler(this, null)
+
+        if (alHandler.isAsset(Globals.alSelected)) {
+            bindingDeleteAL.deleteALTitle.text = "Delete asset"
+            bindingDeleteAL.deleteALWarning.text = "Are you sure you want to delete this asset?"
+        } else {
+            bindingDeleteAL.deleteALTitle.text = "Delete liability"
+            bindingDeleteAL.deleteALWarning.text = "Are you sure you want to delete this liability?"
+        }
+
+        bindingDeleteAL.tvDelete.setOnClickListener {
+
+            val associatedValuations = valuationHandler.getValuationsForAL(Globals.alSelected)
+            for (valuation in associatedValuations) {
+                valuationHandler.deleteValuation(valuationHandler.getValuation(valuation.id))
+            }
+
+            alHandler.deleteAL(alHandler.getAL(Globals.alSelected))
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+
+            Toast.makeText(this, "Valuation deleted.", Toast.LENGTH_LONG).show()
+
+            setUpValuationList(Globals.alSelected)
+            valuationHandler.close()
+            deleteDialog.dismiss()
+        }
+
+        bindingDeleteAL.tvCancel.setOnClickListener {
+            deleteDialog.dismiss()
+        }
+
+        deleteDialog.show()
+    }
+
+    private fun updateAL() {
+        val updateDialog = Dialog(this, R.style.Theme_Dialog)
+        updateDialog.setCancelable(false)
+        bindingUpdateAL = DialogUpdateAlBinding.inflate(layoutInflater)
+        val view = bindingUpdateAL.root
+        updateDialog.setContentView(view)
+        updateDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val alHandler = ALHandler(this, null)
+        val originalAL = alHandler.getAL(Globals.alSelected)
+
+        bindingUpdateAL.etName.setText(originalAL.name)
+        bindingUpdateAL.colourPicker.color = originalAL.colour.toInt()
+        bindingUpdateAL.colourPicker.showOldCenterColor = false
+
+        if (originalAL.al == 1) {
+            bindingUpdateAL.updateALTitle.text = "Update asset"
+        } else {
+            bindingUpdateAL.updateALTitle.text = "Update liability"
+        }
+
+        bindingUpdateAL.tvUpdate.setOnClickListener {
+            val name = bindingUpdateAL.etName.text.toString()
+            val colour = bindingUpdateAL.colourPicker.color.toString()
+            val updatedAL = ALModel(originalAL.id, originalAL.al, name, originalAL.note, colour)
+            if (name.isNotEmpty()) {
+                alHandler.updateAL(updatedAL)
+                setUpTitles()
+                updateDialog.dismiss()
+                if (originalAL.al == 1) {
+                    Toast.makeText(this, "Asset updated.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Liability updated.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        bindingUpdateAL.tvCancel.setOnClickListener {
+            updateDialog.dismiss()
+        }
+
+        updateDialog.show()
 
     }
 

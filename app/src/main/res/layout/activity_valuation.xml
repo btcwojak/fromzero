@@ -38,13 +38,25 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/alEdit"
+                android:id="@+id/alDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_delete"
+                app:layout_constraintRight_toLeftOf="@id/alUpdate"
+                app:layout_constraintTop_toTopOf="@id/alUpdate"
+                app:layout_constraintBottom_toBottomOf="@id/alUpdate"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_marginEnd="10dp" />
+
+            <ImageView
+                android:id="@+id/alUpdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_edit"
                 app:layout_constraintRight_toLeftOf="@id/alTitle"
                 app:layout_constraintTop_toTopOf="@id/alTitle"
                 app:layout_constraintBottom_toBottomOf="@id/alTitle"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_marginEnd="10dp" />
 
             <TextView

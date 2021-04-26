@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 
 class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -211,7 +210,7 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_AL WHERE $KEY_ID IS $idInput", null)
 
-        var alModel = ALModel(0,0,"","","")
+        var alModel = ALModel(0, 0, "", "", "")
         val id: Int
         val al: Int
         val name: String

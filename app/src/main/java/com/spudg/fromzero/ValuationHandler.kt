@@ -132,7 +132,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         list.sortBy { it.date.toFloat() }
 
         return if (list.size > 0) {
-            list[list.size-1].value
+            list[list.size - 1].value
         } else {
             "0"
         }

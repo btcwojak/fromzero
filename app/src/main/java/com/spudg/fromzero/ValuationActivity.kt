@@ -192,7 +192,7 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH]
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+        bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingAddValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -222,7 +222,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingDMYPicker.dmypYear.minValue = 1000
 
             bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked+1
+            bindingDMYPicker.dmypMonth.value = monthPicked + 1
             bindingDMYPicker.dmypYear.value = yearPicked
 
             bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
@@ -245,7 +245,7 @@ class ValuationActivity : AppCompatActivity() {
                     bindingDMYPicker.dmypDay.maxValue = 31
                     bindingDMYPicker.dmypDay.minValue = 1
                 }
-                monthPicked = newVal-1
+                monthPicked = newVal - 1
             }
 
             bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->
@@ -260,7 +260,7 @@ class ValuationActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+                bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -319,7 +319,7 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = cal.get(Calendar.MONTH)
         var yearPicked = cal.get(Calendar.YEAR)
 
-        bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+        bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingUpdateValuation.etValue.setText(valuation.value)
 
@@ -351,7 +351,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingDMYPicker.dmypYear.minValue = 1000
 
             bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked+1
+            bindingDMYPicker.dmypMonth.value = monthPicked + 1
             bindingDMYPicker.dmypYear.value = yearPicked
 
             bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
@@ -374,7 +374,7 @@ class ValuationActivity : AppCompatActivity() {
                     bindingDMYPicker.dmypDay.maxValue = 31
                     bindingDMYPicker.dmypDay.minValue = 1
                 }
-                monthPicked = newVal-1
+                monthPicked = newVal - 1
             }
 
             bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->
@@ -389,7 +389,7 @@ class ValuationActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+                bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 

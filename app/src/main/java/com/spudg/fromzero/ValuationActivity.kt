@@ -5,12 +5,25 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.spudg.fromzero.databinding.*
+import java.text.DecimalFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ValuationActivity : AppCompatActivity() {
 
@@ -30,7 +43,8 @@ class ValuationActivity : AppCompatActivity() {
         setContentView(view)
 
         setUpTitles()
-        setUpValuationList(Globals.alSelected)
+        setUpValuationList()
+        setUpChart()
 
         bindingValuation.addValuation.setOnClickListener {
             addValuation()
@@ -49,6 +63,68 @@ class ValuationActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+    }
+
+    private fun setUpChart() {
+        val valuationHandler = ValuationHandler(this, null)
+        val valuations = valuationHandler.getValuationsForAL(Globals.alSelected)
+        val lineEntries: ArrayList<BarEntry> = arrayListOf()
+
+        valuations.sortBy { it.date }
+
+        for (i in 0 until valuations.size) {
+            lineEntries.add(BarEntry(i.toFloat(), valuations[i].value.toFloat()))
+        }
+
+
+        val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
+        val dataLine = LineData(dataSetLine)
+        dataSetLine.color = R.color.colorAccent
+
+        val chartLine: LineChart = bindingValuation.valuationChart
+        if (lineEntries.size > 0) {
+            chartLine.data = dataLine
+        }
+
+        dataLine.setDrawValues(false)
+
+        dataSetLine.setDrawFilled(true)
+        dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
+
+        dataSetLine.setDrawCircles(false)
+
+        chartLine.animateY(800)
+        chartLine.setNoDataText("No valuations added yet.")
+        chartLine.setNoDataTextColor(0xff000000.toInt())
+        chartLine.setNoDataTextTypeface(ResourcesCompat.getFont(this, R.font.open_sans_light))
+        chartLine.xAxis.setDrawGridLines(false)
+        chartLine.xAxis.setDrawLabels(false)
+        chartLine.axisLeft.setDrawGridLines(false)
+        chartLine.axisRight.isEnabled = false
+        chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chartLine.legend.isEnabled = false
+        chartLine.description.isEnabled = false
+
+        dataLine.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return if (value > 0) {
+                    val mFormat = DecimalFormat("###,###,##0.00")
+                    mFormat.format(super.getFormattedValue(value).toFloat())
+                } else {
+                    ""
+                }
+            }
+        })
+
+        val l: Legend = chartLine.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+
+        chartLine.invalidate()
+
 
     }
 
@@ -86,7 +162,7 @@ class ValuationActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Valuation deleted.", Toast.LENGTH_LONG).show()
 
-            setUpValuationList(Globals.alSelected)
+            setUpValuationList()
             valuationHandler.close()
             deleteDialog.dismiss()
         }
@@ -165,13 +241,13 @@ class ValuationActivity : AppCompatActivity() {
         return result
     }
 
-    private fun setUpValuationList(al: Int) {
-        if (getValuationList(al).size > 0) {
+    private fun setUpValuationList() {
+        if (getValuationList(Globals.alSelected).size > 0) {
             bindingValuation.rvValuations.visibility = View.VISIBLE
             bindingValuation.tvNoValuations.visibility = View.GONE
             val manager = LinearLayoutManager(this)
             bindingValuation.rvValuations.layoutManager = manager
-            val assetAdapter = ValuationAdapter(this, getValuationList(al))
+            val assetAdapter = ValuationAdapter(this, getValuationList(Globals.alSelected))
             bindingValuation.rvValuations.adapter = assetAdapter
         } else {
             bindingValuation.rvValuations.visibility = View.GONE
@@ -288,7 +364,7 @@ class ValuationActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Valuation added.", Toast.LENGTH_LONG).show()
 
-                setUpValuationList(Globals.alSelected)
+                setUpValuationList()
                 valuationHandler.close()
                 addDialog.dismiss()
 
@@ -417,7 +493,7 @@ class ValuationActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Valuation updated.", Toast.LENGTH_LONG).show()
 
-                setUpValuationList(Globals.alSelected)
+                setUpValuationList()
                 valuationHandler.close()
                 updateDialog.dismiss()
 
@@ -448,7 +524,7 @@ class ValuationActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Valuation deleted.", Toast.LENGTH_LONG).show()
 
-            setUpValuationList(Globals.alSelected)
+            setUpValuationList()
             valuationHandler.close()
             deleteDialog.dismiss()
         }

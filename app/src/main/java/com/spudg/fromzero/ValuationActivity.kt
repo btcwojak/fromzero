@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +22,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.spudg.fromzero.databinding.*
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ValuationActivity : AppCompatActivity() {
 
@@ -67,7 +65,6 @@ class ValuationActivity : AppCompatActivity() {
     }
 
     private fun setUpChart() {
-
 
 
         if (getValuationList(Globals.alSelected).size > 1) {

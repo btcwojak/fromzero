@@ -111,6 +111,8 @@
             android:layout_height="match_parent"
             app:layout_constraintVertical_weight="4">
 
+
+
             <Button
                 android:id="@+id/addValuation"
                 android:layout_width="wrap_content"
@@ -123,6 +125,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/valuationChart"
@@ -148,30 +155,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    android:paddingBottom="20dp" />
+                    android:paddingBottom="100dp" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvNoValuations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
-                android:fontFamily="@font/open_sans_light"
-                android:gravity="center_horizontal"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="No valuations added yet."
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tvNoValuations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:fontFamily="@font/open_sans_light"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="No valuations added yet."
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+
 

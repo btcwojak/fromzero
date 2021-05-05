@@ -363,7 +363,13 @@ class ValuationActivity : AppCompatActivity() {
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, dayPicked)
 
-            val value = bindingAddValuation.etValue.text.toString()
+            val alHandler = ALHandler(this, null)
+            var value: String = if (alHandler.isAsset(Globals.alSelected)) {
+                bindingAddValuation.etValue.text.toString()
+            } else {
+                ((bindingAddValuation.etValue.text.toString().toFloat())*-1).toString()
+            }
+            
             val date = calendar.timeInMillis.toString()
 
             if (value.isNotEmpty()) {
@@ -492,9 +498,15 @@ class ValuationActivity : AppCompatActivity() {
 
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, dayPicked)
-
-            val value = bindingUpdateValuation.etValue.text.toString()
+            
             val date = calendar.timeInMillis.toString()
+
+            val alHandler = ALHandler(this, null)
+            val value: String = if (alHandler.isAsset(Globals.alSelected)) {
+                bindingAddValuation.etValue.text.toString()
+            } else {
+                ((bindingAddValuation.etValue.text.toString().toFloat())*-1).toString()
+            }
 
             if (value.isNotEmpty()) {
 

@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -98,6 +101,115 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
     }
 
+    fun getAveNetWorthForMonthYear(monthNo: Int): String {
+        val valuations = ArrayList<ValuationModel>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
+        val month = monthNo % 12
+        val year = (monthNo-month)/12
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.MONTH, (month-1))
+        cal.set(Calendar.YEAR, year)
+
+        var id: Int
+        var al: Int
+        var value: String
+        var date: String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+                al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+                value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
+                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = date.toLong()
+                if (((cal.get(Calendar.MONTH)+1) == month) && (cal.get(Calendar.YEAR) == year)) {
+                    val valuation = ValuationModel(
+                        id = id,
+                        al = al,
+                        value = value,
+                        date = date
+                    )
+                    valuations.add(valuation)
+                }
+            } while (cursor.moveToNext())
+        }
+
+        val allALs = ArrayList<Int>()
+        val allValuations = getAllValuations()
+        for (valuation in allValuations) {
+            if (!allALs.contains(valuation.al)) {
+                allALs.add(valuation.al)
+            }
+        }
+
+        val relevantValuations = ArrayList<Float>()
+
+        for (alItem in allALs) {
+            val latestValuation = getLatestValuationModelForAL(alItem)
+            if (latestValuation.date.toLong() <= cal.timeInMillis) {
+                relevantValuations.add(latestValuation.value.toFloat())
+            } else {
+                for (valuation in valuations) {
+                    if (valuation.al == alItem) {
+                        relevantValuations.add(valuation.value.toFloat())
+                    } else {
+                        relevantValuations.add(0F)
+                    }
+                }
+            }
+        }
+
+        var rollingNetWorth = 0F
+
+        for (valuation in relevantValuations) {
+            rollingNetWorth += valuation
+        }
+
+        cursor.close()
+        db.close()
+
+        return rollingNetWorth.toString()
+
+    }
+
+    fun getAllValuations(): ArrayList<ValuationModel> {
+        val list = ArrayList<ValuationModel>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
+
+        var id: Int
+        var al: Int
+        var value: String
+        var date: String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+                al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+                value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
+                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
+                val valuation = ValuationModel(
+                    id = id,
+                    al = al,
+                    value = value,
+                    date = date
+                )
+                list.add(valuation)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+
+        list.sortByDescending { it.date.toFloat() }
+
+        return list
+
+    }
+
     fun getLatestValuationForAL(alFilter: Int): String {
         val list = ArrayList<ValuationModel>()
         val db = this.readableDatabase
@@ -140,14 +252,52 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
     }
 
-    fun getValuation(idInput: Int): ValuationModel {
+    fun getLatestValuationModelForAL(alFilter: Int): ValuationModel {
+        val list = ArrayList<ValuationModel>()
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS WHERE $KEY_ID is $idInput", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
 
         var id: Int
         var al: Int
         var value: String
         var date: String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+                al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
+                value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
+                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
+                if (alFilter == al) {
+                    val valuation = ValuationModel(
+                        id = id,
+                        al = al,
+                        value = value,
+                        date = date
+                    )
+                    list.add(valuation)
+                }
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+
+        list.sortBy { it.date.toFloat() }
+
+        return list.first()
+
+
+    }
+
+    fun getValuation(idInput: Int): ValuationModel {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS WHERE $KEY_ID is $idInput", null)
+
+        val id: Int
+        val al: Int
+        val value: String
+        val date: String
         var valuation = ValuationModel(0, 0, "", "")
 
         if (cursor.moveToFirst()) {

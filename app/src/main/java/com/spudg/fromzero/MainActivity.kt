@@ -5,10 +5,22 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.BarLineChartBase
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.spudg.fromzero.databinding.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -37,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         setUpAssetList()
         setUpLiabilityList()
         setUpNetWorthHeading()
+        setUpChart()
+
 
         bindingMain.addAssetLiability.setOnClickListener {
             val assetLiabilityDialog = Dialog(this, R.style.Theme_Dialog)
@@ -62,6 +76,111 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setUpChart() {
+        val valuationHandler = ValuationHandler(this, null)
+        val valuations = valuationHandler.getAllValuations()
+
+        val earliestValuationDate = valuations.sortedBy { it.date }.first().date
+        val calEarly = Calendar.getInstance()
+        calEarly.timeInMillis = earliestValuationDate.toLong()
+        val earliestMonth = calEarly.get(Calendar.MONTH) + 1
+        val earliestYear = calEarly.get(Calendar.YEAR)
+        val earliestMonthNo = (earliestYear*12) + earliestMonth
+
+        val latestValuationDate = valuations.sortedBy { it.date }.last().date
+        val calLate = Calendar.getInstance()
+        calLate.timeInMillis = latestValuationDate.toLong()
+        val latestMonth = calLate.get(Calendar.MONTH) + 1
+        val latestYear = calLate.get(Calendar.YEAR)
+        val latestMonthNo = (latestYear*12) + latestMonth
+
+        val numberOfXAxis = latestMonthNo - earliestMonthNo + 1
+
+        val xAxisLabels = arrayListOf<String>()
+        val yAxisLabels = arrayListOf<String>()
+            repeat(numberOfXAxis) {
+                if (((it+earliestMonth)%12).toString().toInt() == 0) {
+                    xAxisLabels.add(Globals.getShortMonth(12))
+                } else {
+                    xAxisLabels.add(Globals.getShortMonth((it+earliestMonth)%12))
+                }
+                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it+earliestMonthNo))
+                Log.e("test",xAxisLabels[it])
+                Log.e("test",yAxisLabels[it])
+        }
+
+        val lineEntries: ArrayList<BarEntry> = arrayListOf()
+
+        for (i in 0 until yAxisLabels.size) {
+            lineEntries.add(BarEntry(i.toFloat(), yAxisLabels[i].toFloat()))
+        }
+
+
+        val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
+        val dataLine = LineData(dataSetLine)
+        dataSetLine.color = R.color.colorAccent
+
+        val chartLine: LineChart = bindingMain.nwChart
+        if (lineEntries.size > 0) {
+            chartLine.data = dataLine
+        }
+
+        dataLine.setDrawValues(false)
+
+        dataSetLine.setDrawFilled(true)
+        dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
+
+        dataSetLine.setDrawCircles(false)
+
+        chartLine.animateY(800)
+        chartLine.setNoDataText("No valuations added yet.")
+        chartLine.setNoDataTextColor(0xff000000.toInt())
+        chartLine.setNoDataTextTypeface(ResourcesCompat.getFont(this, R.font.open_sans_light))
+        chartLine.xAxis.setDrawGridLines(false)
+        chartLine.xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return if (value > 0) {
+                    xAxisLabels[value.toInt()]
+                } else {
+                    ""
+                }
+            }
+        }
+        chartLine.axisLeft.setDrawLabels(false)
+        chartLine.axisLeft.setDrawGridLines(false)
+        chartLine.xAxis.setDrawAxisLine(false)
+        chartLine.axisLeft.setDrawAxisLine(false)
+        chartLine.setTouchEnabled(false)
+        chartLine.axisRight.isEnabled = false
+        chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chartLine.legend.isEnabled = false
+        chartLine.description.isEnabled = false
+
+        dataLine.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return if (value > 0) {
+                    val mFormat = DecimalFormat("###,###,##0.00")
+                    mFormat.format(super.getFormattedValue(value).toFloat())
+                } else {
+                    ""
+                }
+            }
+        })
+
+        val l: Legend = chartLine.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+
+        chartLine.invalidate()
+
+
+
+
+
+    }
+
     private fun setUpNetWorthHeading() {
 
         val alHandler = ALHandler(this, null)
@@ -76,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         for (liability in alHandler.getAllLiabilities()) {
             runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
         }
-        bindingMain.latestNetWorth.text = gbpFormatter.format(runningAssetTotal - runningLiabilityTotal)
+        bindingMain.latestNetWorth.text = gbpFormatter.format(runningAssetTotal + runningLiabilityTotal)
     }
 
     private fun getAssetList(): ArrayList<ALModel> {
@@ -407,7 +526,7 @@ class MainActivity : AppCompatActivity() {
                 val valuationHandler = ValuationHandler(this, null)
 
                 alHandler.addAL(ALModel(0, 0, name, note, colour))
-                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), value, date))
+                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), (value.toFloat()*-1).toString(), date))
 
                 Toast.makeText(this, "Liability added.", Toast.LENGTH_LONG).show()
 

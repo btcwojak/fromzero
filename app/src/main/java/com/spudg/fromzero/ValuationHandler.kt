@@ -4,12 +4,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
-        SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+    SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
     companion object {
 
@@ -26,7 +25,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createValuationTable =
-                ("CREATE TABLE $TABLE_VALUATIONS($KEY_ID INTEGER PRIMARY KEY,$KEY_AL INTEGER,$KEY_VALUE TEXT,$KEY_DATE TEXT)")
+            ("CREATE TABLE $TABLE_VALUATIONS($KEY_ID INTEGER PRIMARY KEY,$KEY_AL INTEGER,$KEY_VALUE TEXT,$KEY_DATE TEXT)")
         db?.execSQL(createValuationTable)
     }
 
@@ -82,10 +81,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
                 if (alFilter == al) {
                     val valuation = ValuationModel(
-                            id = id,
-                            al = al,
-                            value = value,
-                            date = date
+                        id = id,
+                        al = al,
+                        value = value,
+                        date = date
                     )
                     list.add(valuation)
                 }
@@ -106,10 +105,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
         val month = monthNo % 12
-        val year = (monthNo-month)/12
+        val year = (monthNo - month) / 12
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.MONTH, (month-1))
+        cal.set(Calendar.MONTH, (month - 1))
         cal.set(Calendar.YEAR, year)
 
         var id: Int
@@ -125,7 +124,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = date.toLong()
-                if (((cal.get(Calendar.MONTH)+1) == month) && (cal.get(Calendar.YEAR) == year)) {
+                if (((cal.get(Calendar.MONTH) + 1) == month) && (cal.get(Calendar.YEAR) == year)) {
                     val valuation = ValuationModel(
                         id = id,
                         al = al,
@@ -228,10 +227,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
                 if (alFilter == al) {
                     val valuation = ValuationModel(
-                            id = id,
-                            al = al,
-                            value = value,
-                            date = date
+                        id = id,
+                        al = al,
+                        value = value,
+                        date = date
                     )
                     list.add(valuation)
                 }
@@ -306,10 +305,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
             value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
             date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
             valuation = ValuationModel(
-                    id = id,
-                    al = al,
-                    value = value,
-                    date = date
+                id = id,
+                al = al,
+                value = value,
+                date = date
             )
         }
 

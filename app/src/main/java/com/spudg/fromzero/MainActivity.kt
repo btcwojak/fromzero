@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -85,28 +84,28 @@ class MainActivity : AppCompatActivity() {
         calEarly.timeInMillis = earliestValuationDate.toLong()
         val earliestMonth = calEarly.get(Calendar.MONTH) + 1
         val earliestYear = calEarly.get(Calendar.YEAR)
-        val earliestMonthNo = (earliestYear*12) + earliestMonth
+        val earliestMonthNo = (earliestYear * 12) + earliestMonth
 
         val latestValuationDate = valuations.sortedBy { it.date }.last().date
         val calLate = Calendar.getInstance()
         calLate.timeInMillis = latestValuationDate.toLong()
         val latestMonth = calLate.get(Calendar.MONTH) + 1
         val latestYear = calLate.get(Calendar.YEAR)
-        val latestMonthNo = (latestYear*12) + latestMonth
+        val latestMonthNo = (latestYear * 12) + latestMonth
 
         val numberOfXAxis = latestMonthNo - earliestMonthNo + 1
 
         val xAxisLabels = arrayListOf<String>()
         val yAxisLabels = arrayListOf<String>()
-            repeat(numberOfXAxis) {
-                if (((it+earliestMonth)%12).toString().toInt() == 0) {
-                    xAxisLabels.add(Globals.getShortMonth(12))
-                } else {
-                    xAxisLabels.add(Globals.getShortMonth((it+earliestMonth)%12))
-                }
-                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it+earliestMonthNo))
-                Log.e("test",xAxisLabels[it])
-                Log.e("test",yAxisLabels[it])
+        repeat(numberOfXAxis) {
+            if (((it + earliestMonth) % 12).toString().toInt() == 0) {
+                xAxisLabels.add(Globals.getShortMonth(12))
+            } else {
+                xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
+            }
+            yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo))
+            Log.e("test", xAxisLabels[it])
+            Log.e("test", yAxisLabels[it])
         }
 
         val lineEntries: ArrayList<BarEntry> = arrayListOf()
@@ -176,9 +175,6 @@ class MainActivity : AppCompatActivity() {
         chartLine.invalidate()
 
 
-
-
-
     }
 
     private fun setUpNetWorthHeading() {
@@ -193,9 +189,11 @@ class MainActivity : AppCompatActivity() {
 
         var runningLiabilityTotal = 0F
         for (liability in alHandler.getAllLiabilities()) {
-            runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
+            runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id)
+                .toFloat()
         }
-        bindingMain.latestNetWorth.text = gbpFormatter.format(runningAssetTotal + runningLiabilityTotal)
+        bindingMain.latestNetWorth.text =
+            gbpFormatter.format(runningAssetTotal + runningLiabilityTotal)
     }
 
     private fun getAssetList(): ArrayList<ALModel> {
@@ -259,7 +257,8 @@ class MainActivity : AppCompatActivity() {
             val valuationHandler = ValuationHandler(this, null)
             var runningLiabilityTotal = 0F
             for (liability in alHandler.getAllLiabilities()) {
-                runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id).toFloat()
+                runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id)
+                    .toFloat()
             }
             bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
 
@@ -357,7 +356,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddAsset.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+                bindingAddAsset.date.text =
+                    "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -390,7 +390,14 @@ class MainActivity : AppCompatActivity() {
                 val valuationHandler = ValuationHandler(this, null)
 
                 alHandler.addAL(ALModel(0, 1, name, note, colour))
-                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), value, date))
+                valuationHandler.addValuation(
+                    ValuationModel(
+                        0,
+                        alHandler.getLatestALID(),
+                        value,
+                        date
+                    )
+                )
 
                 Toast.makeText(this, "Asset added.", Toast.LENGTH_LONG).show()
 
@@ -400,7 +407,7 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
-                        .show()
+                    .show()
             }
 
         }
@@ -425,7 +432,8 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddLiability.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+        bindingAddLiability.date.text =
+            "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
 
         bindingAddLiability.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -493,7 +501,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddLiability.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+                bindingAddLiability.date.text =
+                    "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -526,7 +535,14 @@ class MainActivity : AppCompatActivity() {
                 val valuationHandler = ValuationHandler(this, null)
 
                 alHandler.addAL(ALModel(0, 0, name, note, colour))
-                valuationHandler.addValuation(ValuationModel(0, alHandler.getLatestALID(), (value.toFloat()*-1).toString(), date))
+                valuationHandler.addValuation(
+                    ValuationModel(
+                        0,
+                        alHandler.getLatestALID(),
+                        (value.toFloat() * -1).toString(),
+                        date
+                    )
+                )
 
                 Toast.makeText(this, "Liability added.", Toast.LENGTH_LONG).show()
 
@@ -536,7 +552,7 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
-                        .show()
+                    .show()
             }
 
         }

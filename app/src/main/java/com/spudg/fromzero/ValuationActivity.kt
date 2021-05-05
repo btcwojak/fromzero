@@ -240,7 +240,9 @@ class ValuationActivity : AppCompatActivity() {
             bindingValuation.assetOrLiability.text = "Liability"
         }
 
-        bindingValuation.alColour.setBackgroundColor(dbHandler.getALColour(Globals.alSelected).toInt())
+        bindingValuation.alColour.setBackgroundColor(
+            dbHandler.getALColour(Globals.alSelected).toInt()
+        )
 
     }
 
@@ -278,7 +280,8 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH]
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+        bindingAddValuation.date.text =
+            "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingAddValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -346,7 +349,8 @@ class ValuationActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingAddValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+                bindingAddValuation.date.text =
+                    "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -367,9 +371,9 @@ class ValuationActivity : AppCompatActivity() {
             var value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingAddValuation.etValue.text.toString()
             } else {
-                ((bindingAddValuation.etValue.text.toString().toFloat())*-1).toString()
+                ((bindingAddValuation.etValue.text.toString().toFloat()) * -1).toString()
             }
-            
+
             val date = calendar.timeInMillis.toString()
 
             if (value.isNotEmpty()) {
@@ -387,7 +391,7 @@ class ValuationActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
-                        .show()
+                    .show()
             }
 
         }
@@ -412,7 +416,8 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = cal.get(Calendar.MONTH)
         var yearPicked = cal.get(Calendar.YEAR)
 
-        bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+        bindingUpdateValuation.date.text =
+            "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingUpdateValuation.etValue.setText(valuation.value)
 
@@ -482,7 +487,8 @@ class ValuationActivity : AppCompatActivity() {
             }
 
             bindingDMYPicker.submitDmy.setOnClickListener {
-                bindingUpdateValuation.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+                bindingUpdateValuation.date.text =
+                    "$dayPicked ${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -498,21 +504,28 @@ class ValuationActivity : AppCompatActivity() {
 
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, dayPicked)
-            
+
             val date = calendar.timeInMillis.toString()
 
             val alHandler = ALHandler(this, null)
             val value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingAddValuation.etValue.text.toString()
             } else {
-                ((bindingAddValuation.etValue.text.toString().toFloat())*-1).toString()
+                ((bindingAddValuation.etValue.text.toString().toFloat()) * -1).toString()
             }
 
             if (value.isNotEmpty()) {
 
                 val valuationHandler = ValuationHandler(this, null)
 
-                valuationHandler.updateValuation(ValuationModel(valuation.id, Globals.alSelected, value, date))
+                valuationHandler.updateValuation(
+                    ValuationModel(
+                        valuation.id,
+                        Globals.alSelected,
+                        value,
+                        date
+                    )
+                )
 
                 Toast.makeText(this, "Valuation updated.", Toast.LENGTH_LONG).show()
 
@@ -523,7 +536,7 @@ class ValuationActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
-                        .show()
+                    .show()
             }
 
         }

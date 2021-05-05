@@ -10,14 +10,14 @@ import java.text.NumberFormat
 import java.util.*
 
 class ALAdapter(private val context: Context, private val items: ArrayList<ALModel>) :
-        RecyclerView.Adapter<ALAdapter.ALViewHolder>() {
+    RecyclerView.Adapter<ALAdapter.ALViewHolder>() {
 
     inner class ALViewHolder(val binding: AssetLiabilityRowBinding) :
-            RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ALViewHolder {
         val binding = AssetLiabilityRowBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+            .inflate(LayoutInflater.from(parent.context), parent, false)
         return ALViewHolder(binding)
     }
 

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
-        SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+    SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
     companion object {
 
@@ -24,7 +24,7 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createALTable =
-                ("CREATE TABLE $TABLE_AL($KEY_ID INTEGER PRIMARY KEY,$KEY_AL INTEGER,$KEY_NAME TEXT,$KEY_NOTE TEXT,$KEY_COLOUR TEXT)")
+            ("CREATE TABLE $TABLE_AL($KEY_ID INTEGER PRIMARY KEY,$KEY_AL INTEGER,$KEY_NAME TEXT,$KEY_NOTE TEXT,$KEY_COLOUR TEXT)")
         db?.execSQL(createALTable)
     }
 
@@ -84,11 +84,11 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
                 if (al == 1) {
                     val asset = ALModel(
-                            id = id,
-                            al = al,
-                            name = name,
-                            note = note,
-                            colour = colour
+                        id = id,
+                        al = al,
+                        name = name,
+                        note = note,
+                        colour = colour
                     )
                     list.add(asset)
                 }
@@ -122,11 +122,11 @@ class ALHandler(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 colour = cursor.getString(cursor.getColumnIndex(KEY_COLOUR))
                 if (al == 0) {
                     val liability = ALModel(
-                            id = id,
-                            al = al,
-                            name = name,
-                            note = note,
-                            colour = colour
+                        id = id,
+                        al = al,
+                        name = name,
+                        note = note,
+                        colour = colour
                     )
                     list.add(liability)
                 }

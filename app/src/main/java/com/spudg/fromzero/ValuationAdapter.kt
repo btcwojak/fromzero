@@ -10,14 +10,14 @@ import java.text.NumberFormat
 import java.util.*
 
 class ValuationAdapter(private val context: Context, private val items: ArrayList<ValuationModel>) :
-        RecyclerView.Adapter<ValuationAdapter.ValuationViewHolder>() {
+    RecyclerView.Adapter<ValuationAdapter.ValuationViewHolder>() {
 
     inner class ValuationViewHolder(val binding: ValuationRowBinding) :
-            RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ValuationViewHolder {
         val binding = ValuationRowBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+            .inflate(LayoutInflater.from(parent.context), parent, false)
         return ValuationViewHolder(binding)
     }
 
@@ -31,7 +31,10 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
             binding.value.text = formatter.format(valuation.value.toFloat())
             val cal = Calendar.getInstance()
             cal.timeInMillis = valuation.date.toLong()
-            binding.date.text = "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${cal.get(Calendar.YEAR)}"
+            binding.date.text =
+                "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${
+                    cal.get(Calendar.YEAR)
+                }"
 
             binding.mainRowLayout.setOnClickListener {
                 if (context is ValuationActivity) {

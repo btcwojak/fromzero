@@ -63,10 +63,6 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         return success
     }
 
-    fun existsForMonthYear(valuation: ValuationModel) {
-
-    }
-
     fun getValuationsForAL(alFilter: Int): ArrayList<ValuationModel> {
         val list = ArrayList<ValuationModel>()
         val db = this.readableDatabase
@@ -112,7 +108,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         val year = (monthNo - month) / 12
 
         val cal = Calendar.getInstance()
-        cal.set(Calendar.MONTH, (month - 1))
+        cal.set(Calendar.MONTH, (month))
         cal.set(Calendar.YEAR, year)
 
         var id: Int
@@ -128,7 +124,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
                 val cal = Calendar.getInstance()
                 cal.timeInMillis = date.toLong()
-                if (((cal.get(Calendar.MONTH) + 1) == month) && (cal.get(Calendar.YEAR) == year)) {
+                if (((cal.get(Calendar.MONTH)) == month) && (cal.get(Calendar.YEAR) == year)) {
                     val valuation = ValuationModel(
                         id = id,
                         al = al,
@@ -140,35 +136,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
             } while (cursor.moveToNext())
         }
 
-        val allALs = ArrayList<Int>()
-        val allValuations = getAllValuations()
-        for (valuation in allValuations) {
-            if (!allALs.contains(valuation.al)) {
-                allALs.add(valuation.al)
-            }
-        }
-
-        val relevantValuations = ArrayList<Float>()
-
-        for (alItem in allALs) {
-            val latestValuation = getLatestValuationModelForAL(alItem)
-            if (latestValuation.date.toLong() <= cal.timeInMillis) {
-                relevantValuations.add(latestValuation.value.toFloat())
-            } else {
-                for (valuation in valuations) {
-                    if (valuation.al == alItem) {
-                        relevantValuations.add(valuation.value.toFloat())
-                    } else {
-                        relevantValuations.add(0F)
-                    }
-                }
-            }
-        }
-
         var rollingNetWorth = 0F
 
-        for (valuation in relevantValuations) {
-            rollingNetWorth += valuation
+        for (valuation in valuations) {
+            rollingNetWorth += valuation.value.toFloat()
         }
 
         cursor.close()

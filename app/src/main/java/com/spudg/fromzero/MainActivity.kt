@@ -90,21 +90,21 @@ class MainActivity : AppCompatActivity() {
             val latestValuationDate = valuations.sortedBy { it.date }.last().date
             val calLate = Calendar.getInstance()
             calLate.timeInMillis = latestValuationDate.toLong()
-            val latestMonth = calLate.get(Calendar.MONTH) + 1
+            val latestMonth = calLate.get(Calendar.MONTH)
             val latestYear = calLate.get(Calendar.YEAR)
             val latestMonthNo = (latestYear * 12) + latestMonth
 
-            val numberOfXAxis = latestMonthNo - earliestMonthNo + 1
+            val numberOfXAxis = latestMonthNo - earliestMonthNo
 
             val xAxisLabels = arrayListOf<String>()
             val yAxisLabels = arrayListOf<String>()
-            repeat(numberOfXAxis) {
+            repeat(numberOfXAxis+2) {
                 if (((it + earliestMonth) % 12).toString().toInt() == 0) {
                     xAxisLabels.add(Globals.getShortMonth(12))
                 } else {
                     xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
                 }
-                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo))
+                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo-1))
                 Log.e("test", xAxisLabels[it])
                 Log.e("test", yAxisLabels[it])
             }

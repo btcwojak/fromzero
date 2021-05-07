@@ -79,100 +79,107 @@ class MainActivity : AppCompatActivity() {
         val valuationHandler = ValuationHandler(this, null)
         val valuations = valuationHandler.getAllValuations()
 
-        val earliestValuationDate = valuations.sortedBy { it.date }.first().date
-        val calEarly = Calendar.getInstance()
-        calEarly.timeInMillis = earliestValuationDate.toLong()
-        val earliestMonth = calEarly.get(Calendar.MONTH) + 1
-        val earliestYear = calEarly.get(Calendar.YEAR)
-        val earliestMonthNo = (earliestYear * 12) + earliestMonth
+        if (valuations.size > 0) {
+            val earliestValuationDate = valuations.sortedBy { it.date }.first().date
+            val calEarly = Calendar.getInstance()
+            calEarly.timeInMillis = earliestValuationDate.toLong()
+            val earliestMonth = calEarly.get(Calendar.MONTH) + 1
+            val earliestYear = calEarly.get(Calendar.YEAR)
+            val earliestMonthNo = (earliestYear * 12) + earliestMonth
 
-        val latestValuationDate = valuations.sortedBy { it.date }.last().date
-        val calLate = Calendar.getInstance()
-        calLate.timeInMillis = latestValuationDate.toLong()
-        val latestMonth = calLate.get(Calendar.MONTH) + 1
-        val latestYear = calLate.get(Calendar.YEAR)
-        val latestMonthNo = (latestYear * 12) + latestMonth
+            val latestValuationDate = valuations.sortedBy { it.date }.last().date
+            val calLate = Calendar.getInstance()
+            calLate.timeInMillis = latestValuationDate.toLong()
+            val latestMonth = calLate.get(Calendar.MONTH) + 1
+            val latestYear = calLate.get(Calendar.YEAR)
+            val latestMonthNo = (latestYear * 12) + latestMonth
 
-        val numberOfXAxis = latestMonthNo - earliestMonthNo + 1
+            val numberOfXAxis = latestMonthNo - earliestMonthNo + 1
 
-        val xAxisLabels = arrayListOf<String>()
-        val yAxisLabels = arrayListOf<String>()
-        repeat(numberOfXAxis) {
-            if (((it + earliestMonth) % 12).toString().toInt() == 0) {
-                xAxisLabels.add(Globals.getShortMonth(12))
-            } else {
-                xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
-            }
-            yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo))
-            Log.e("test", xAxisLabels[it])
-            Log.e("test", yAxisLabels[it])
-        }
-
-        val lineEntries: ArrayList<BarEntry> = arrayListOf()
-
-        for (i in 0 until yAxisLabels.size) {
-            lineEntries.add(BarEntry(i.toFloat(), yAxisLabels[i].toFloat()))
-        }
-
-
-        val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
-        val dataLine = LineData(dataSetLine)
-        dataSetLine.color = R.color.colorAccent
-
-        val chartLine: LineChart = bindingMain.nwChart
-        if (lineEntries.size > 0) {
-            chartLine.data = dataLine
-        }
-
-        //dataLine.setDrawValues(false)
-
-        //dataSetLine.setDrawFilled(true)
-        //dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
-
-        //dataSetLine.setDrawCircles(false)
-
-        chartLine.animateY(800)
-        chartLine.setNoDataText("No valuations added yet.")
-        chartLine.setNoDataTextColor(0xff000000.toInt())
-        chartLine.setNoDataTextTypeface(ResourcesCompat.getFont(this, R.font.open_sans_light))
-        chartLine.xAxis.setDrawGridLines(false)
-        chartLine.xAxis.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return if (value > 0) {
-                    xAxisLabels[value.toInt()]
+            val xAxisLabels = arrayListOf<String>()
+            val yAxisLabels = arrayListOf<String>()
+            repeat(numberOfXAxis) {
+                if (((it + earliestMonth) % 12).toString().toInt() == 0) {
+                    xAxisLabels.add(Globals.getShortMonth(12))
                 } else {
-                    ""
+                    xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
+                }
+                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo))
+                Log.e("test", xAxisLabels[it])
+                Log.e("test", yAxisLabels[it])
+            }
+
+            val lineEntries: ArrayList<BarEntry> = arrayListOf()
+
+            for (i in 0 until yAxisLabels.size) {
+                lineEntries.add(BarEntry(i.toFloat(), yAxisLabels[i].toFloat()))
+            }
+
+
+            val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
+            val dataLine = LineData(dataSetLine)
+            dataSetLine.color = R.color.colorAccent
+
+            val chartLine: LineChart = bindingMain.nwChart
+            if (lineEntries.size > 0) {
+                chartLine.data = dataLine
+            }
+
+            dataLine.setDrawValues(false)
+
+            dataSetLine.setDrawFilled(true)
+            dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
+
+            dataSetLine.setDrawCircles(false)
+
+            chartLine.animateY(800)
+            chartLine.setNoDataText("No valuations added yet.")
+            chartLine.setNoDataTextColor(0xff000000.toInt())
+            chartLine.setNoDataTextTypeface(ResourcesCompat.getFont(this, R.font.open_sans_light))
+            chartLine.xAxis.setDrawGridLines(false)
+            chartLine.xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value > 0) {
+                        xAxisLabels[value.toInt()]
+                    } else {
+                        ""
+                    }
                 }
             }
-        }
-        //chartLine.axisLeft.setDrawLabels(false)
-        //chartLine.axisLeft.setDrawGridLines(false)
-        //chartLine.xAxis.setDrawAxisLine(false)
-        //chartLine.axisLeft.setDrawAxisLine(false)
-        //chartLine.setTouchEnabled(false)
-        chartLine.axisRight.isEnabled = false
-        chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        chartLine.legend.isEnabled = false
-        chartLine.description.isEnabled = false
+            chartLine.axisLeft.setDrawLabels(false)
+            chartLine.axisLeft.setDrawGridLines(false)
+            chartLine.xAxis.setDrawAxisLine(false)
+            chartLine.axisLeft.setDrawAxisLine(false)
+            chartLine.setTouchEnabled(false)
+            chartLine.axisRight.isEnabled = false
+            chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
+            chartLine.legend.isEnabled = false
+            chartLine.description.isEnabled = false
 
-        dataLine.setValueFormatter(object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return if (value > 0) {
-                    val mFormat = DecimalFormat("###,###,##0.00")
-                    mFormat.format(super.getFormattedValue(value).toFloat())
-                } else {
-                    ""
+            dataLine.setValueFormatter(object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value > 0) {
+                        val mFormat = DecimalFormat("###,###,##0.00")
+                        mFormat.format(super.getFormattedValue(value).toFloat())
+                    } else {
+                        ""
+                    }
                 }
-            }
-        })
+            })
 
-        val l: Legend = chartLine.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
+            val l: Legend = chartLine.legend
+            l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            l.orientation = Legend.LegendOrientation.HORIZONTAL
+            l.setDrawInside(false)
 
-        chartLine.invalidate()
+            chartLine.invalidate()
+        } else {
+            bindingMain.nwChart.visibility = View.INVISIBLE
+            Log.e("mainActivity", "Chart not processed as there is no data.")
+        }
+
+
 
 
     }
@@ -361,6 +368,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Asset added.", Toast.LENGTH_LONG).show()
 
                 setUpAssetList()
+                setUpChart()
                 setUpNetWorthHeading()
                 addDialog.dismiss()
 
@@ -464,6 +472,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Liability added.", Toast.LENGTH_LONG).show()
 
                 setUpLiabilityList()
+                setUpChart()
                 setUpNetWorthHeading()
                 addDialog.dismiss()
 

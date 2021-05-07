@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -441,19 +442,23 @@ class ValuationActivity : AppCompatActivity() {
 
             var valExistsForMonthYear = false
 
-            val valsForCheck = valuationHandler.getValuationsForAL(Globals.alSelected)
-            for (valuation in valsForCheck) {
-                val calForCheck = Calendar.getInstance()
-                calForCheck.timeInMillis = valuation.date.toLong()
-                if (calForCheck.get(Calendar.MONTH) == monthPicked && calForCheck.get(Calendar.YEAR) == yearPicked) {
-                    valExistsForMonthYear = true
-                }
+            val calForExisting = Calendar.getInstance()
+            calForExisting.timeInMillis = valuation.date.toLong()
+
+            val calForUpdate = Calendar.getInstance()
+            calForUpdate.set(yearPicked, monthPicked, 1)
+            val date = calForUpdate.timeInMillis.toString()
+
+            if ((monthPicked != calForExisting.get(Calendar.MONTH)) || (yearPicked != calForExisting.get(Calendar.YEAR))) {
+                val valsForCheck = valuationHandler.getValuationsForAL(Globals.alSelected)
+                for (valCheck in valsForCheck) {
+                    val calForCheck = Calendar.getInstance()
+                    calForCheck.timeInMillis = valCheck.date.toLong()
+                        if (((calForCheck.get(Calendar.MONTH) == monthPicked) && (calForCheck.get(Calendar.YEAR) == yearPicked))) {
+                            valExistsForMonthYear = true
+                        }
+                    }
             }
-
-            val calendar = Calendar.getInstance()
-            calendar.set(yearPicked, monthPicked, 1)
-
-            val date = calendar.timeInMillis.toString()
 
             val value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingUpdateValuation.etValue.text.toString()
@@ -495,12 +500,12 @@ class ValuationActivity : AppCompatActivity() {
                     .show()
             }
 
-            bindingUpdateValuation.tvCancel.setOnClickListener {
-                updateDialog.dismiss()
-            }
-
-
         }
+
+        bindingUpdateValuation.tvCancel.setOnClickListener {
+            updateDialog.dismiss()
+        }
+
         updateDialog.show()
     }
 

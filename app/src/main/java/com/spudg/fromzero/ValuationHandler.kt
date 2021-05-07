@@ -63,6 +63,10 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         return success
     }
 
+    fun existsForMonthYear(valuation: ValuationModel) {
+
+    }
+
     fun getValuationsForAL(alFilter: Int): ArrayList<ValuationModel> {
         val list = ArrayList<ValuationModel>()
         val db = this.readableDatabase

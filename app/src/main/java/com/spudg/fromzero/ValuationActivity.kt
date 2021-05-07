@@ -322,10 +322,23 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingAddValuation.tvAdd.setOnClickListener {
 
+            val valuationHandler = ValuationHandler(this, null)
+            val alHandler = ALHandler(this, null)
+
+            var valExistsForMonthYear = false
+
+            val valsForCheck = valuationHandler.getValuationsForAL(Globals.alSelected)
+            for (valuation in valsForCheck) {
+                val calForCheck = Calendar.getInstance()
+                calForCheck.timeInMillis = valuation.date.toLong()
+                if (calForCheck.get(Calendar.MONTH) == monthPicked && calForCheck.get(Calendar.YEAR) == yearPicked) {
+                    valExistsForMonthYear = true
+                }
+            }
+
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, 1)
 
-            val alHandler = ALHandler(this, null)
             var value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingAddValuation.etValue.text.toString()
             } else {
@@ -336,16 +349,21 @@ class ValuationActivity : AppCompatActivity() {
 
             if (value.isNotEmpty()) {
 
-                val valuationHandler = ValuationHandler(this, null)
+                if (!valExistsForMonthYear) {
+                    val valuationHandler = ValuationHandler(this, null)
 
-                valuationHandler.addValuation(ValuationModel(0, Globals.alSelected, value, date))
+                    valuationHandler.addValuation(ValuationModel(0, Globals.alSelected, value, date))
 
-                Toast.makeText(this, "Valuation added.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Valuation added.", Toast.LENGTH_LONG).show()
 
-                setUpValuationList()
-                setUpChart()
-                valuationHandler.close()
-                addDialog.dismiss()
+                    setUpValuationList()
+                    setUpChart()
+                    valuationHandler.close()
+                    addDialog.dismiss()
+                } else {
+                    Toast.makeText(this, "A valuation already exists for this month.", Toast.LENGTH_LONG)
+                        .show()
+                }
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
@@ -375,7 +393,7 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingUpdateValuation.etValue.setText(valuation.value)
 
-        bindingUpdateValuation.date.text = "${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+        bindingUpdateValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingUpdateValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -390,7 +408,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingMYPicker.mypYear.maxValue = 2999
             bindingMYPicker.mypYear.minValue = 1000
 
-            bindingMYPicker.mypMonth.value = monthPicked+1
+            bindingMYPicker.mypMonth.value = monthPicked + 1
             bindingMYPicker.mypYear.value = yearPicked
 
             bindingMYPicker.mypMonth.displayedValues = Globals.monthsShortArray
@@ -405,7 +423,7 @@ class ValuationActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingUpdateValuation.date.text =
-                    "${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+                    "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -418,12 +436,25 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingUpdateValuation.tvUpdate.setOnClickListener {
 
+            val valuationHandler = ValuationHandler(this, null)
+            val alHandler = ALHandler(this, null)
+
+            var valExistsForMonthYear = false
+
+            val valsForCheck = valuationHandler.getValuationsForAL(Globals.alSelected)
+            for (valuation in valsForCheck) {
+                val calForCheck = Calendar.getInstance()
+                calForCheck.timeInMillis = valuation.date.toLong()
+                if (calForCheck.get(Calendar.MONTH) == monthPicked && calForCheck.get(Calendar.YEAR) == yearPicked) {
+                    valExistsForMonthYear = true
+                }
+            }
+
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, 1)
 
             val date = calendar.timeInMillis.toString()
 
-            val alHandler = ALHandler(this, null)
             val value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingUpdateValuation.etValue.text.toString()
             } else {
@@ -432,35 +463,45 @@ class ValuationActivity : AppCompatActivity() {
 
             if (value.isNotEmpty()) {
 
-                val valuationHandler = ValuationHandler(this, null)
+                if (!valExistsForMonthYear) {
+                    val valuationHandler = ValuationHandler(this, null)
 
-                valuationHandler.updateValuation(
-                    ValuationModel(
-                        valuation.id,
-                        Globals.alSelected,
-                        value,
-                        date
+                    valuationHandler.updateValuation(
+                        ValuationModel(
+                            valuation.id,
+                            Globals.alSelected,
+                            value,
+                            date
+                        )
                     )
-                )
 
-                Toast.makeText(this, "Valuation updated.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Valuation updated.", Toast.LENGTH_LONG).show()
 
-                setUpValuationList()
-                setUpChart()
-                valuationHandler.close()
-                updateDialog.dismiss()
+                    setUpValuationList()
+                    setUpChart()
+                    valuationHandler.close()
+                    updateDialog.dismiss()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "A valuation already exists for this month.",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                }
 
             } else {
                 Toast.makeText(this, "Name or value can't be blank.", Toast.LENGTH_LONG)
                     .show()
             }
 
+            bindingUpdateValuation.tvCancel.setOnClickListener {
+                updateDialog.dismiss()
+            }
+
+
         }
         updateDialog.show()
-
-        bindingUpdateValuation.tvCancel.setOnClickListener {
-            updateDialog.dismiss()
-        }
     }
 
     fun deleteValuation(valuation: ValuationModel) {

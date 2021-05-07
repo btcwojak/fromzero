@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -280,7 +279,7 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH]
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddValuation.date.text = "${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+        bindingAddValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
         bindingAddValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -295,13 +294,13 @@ class ValuationActivity : AppCompatActivity() {
             bindingMYPicker.mypYear.maxValue = 2999
             bindingMYPicker.mypYear.minValue = 1000
 
-            bindingMYPicker.mypMonth.value = monthPicked+1
+            bindingMYPicker.mypMonth.value = monthPicked + 1
             bindingMYPicker.mypYear.value = yearPicked
 
             bindingMYPicker.mypMonth.displayedValues = Globals.monthsShortArray
 
             bindingMYPicker.mypMonth.setOnValueChangedListener { _, _, newVal ->
-                monthPicked = newVal-1
+                monthPicked = newVal - 1
             }
 
             bindingMYPicker.mypYear.setOnValueChangedListener { _, _, newVal ->
@@ -310,7 +309,7 @@ class ValuationActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddValuation.date.text =
-                    "${Globals.getShortMonth(monthPicked+1)} $yearPicked"
+                    "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
@@ -353,7 +352,14 @@ class ValuationActivity : AppCompatActivity() {
                 if (!valExistsForMonthYear) {
                     val valuationHandler = ValuationHandler(this, null)
 
-                    valuationHandler.addValuation(ValuationModel(0, Globals.alSelected, value, date))
+                    valuationHandler.addValuation(
+                        ValuationModel(
+                            0,
+                            Globals.alSelected,
+                            value,
+                            date
+                        )
+                    )
 
                     Toast.makeText(this, "Valuation added.", Toast.LENGTH_LONG).show()
 
@@ -362,7 +368,11 @@ class ValuationActivity : AppCompatActivity() {
                     valuationHandler.close()
                     addDialog.dismiss()
                 } else {
-                    Toast.makeText(this, "A valuation already exists for this month.", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        this,
+                        "A valuation already exists for this month.",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
 
@@ -449,15 +459,21 @@ class ValuationActivity : AppCompatActivity() {
             calForUpdate.set(yearPicked, monthPicked, 1)
             val date = calForUpdate.timeInMillis.toString()
 
-            if ((monthPicked != calForExisting.get(Calendar.MONTH)) || (yearPicked != calForExisting.get(Calendar.YEAR))) {
+            if ((monthPicked != calForExisting.get(Calendar.MONTH)) || (yearPicked != calForExisting.get(
+                    Calendar.YEAR
+                ))
+            ) {
                 val valsForCheck = valuationHandler.getValuationsForAL(Globals.alSelected)
                 for (valCheck in valsForCheck) {
                     val calForCheck = Calendar.getInstance()
                     calForCheck.timeInMillis = valCheck.date.toLong()
-                        if (((calForCheck.get(Calendar.MONTH) == monthPicked) && (calForCheck.get(Calendar.YEAR) == yearPicked))) {
-                            valExistsForMonthYear = true
-                        }
+                    if (((calForCheck.get(Calendar.MONTH) == monthPicked) && (calForCheck.get(
+                            Calendar.YEAR
+                        ) == yearPicked))
+                    ) {
+                        valExistsForMonthYear = true
                     }
+                }
             }
 
             val value: String = if (alHandler.isAsset(Globals.alSelected)) {

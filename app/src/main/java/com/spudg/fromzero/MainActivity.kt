@@ -98,13 +98,13 @@ class MainActivity : AppCompatActivity() {
 
             val xAxisLabels = arrayListOf<String>()
             val yAxisLabels = arrayListOf<String>()
-            repeat(numberOfXAxis+2) {
+            repeat(numberOfXAxis + 2) {
                 if (((it + earliestMonth) % 12).toString().toInt() == 0) {
                     xAxisLabels.add(Globals.getShortMonth(12))
                 } else {
                     xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
                 }
-                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo-1))
+                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo - 1))
                 Log.e("test", xAxisLabels[it])
                 Log.e("test", yAxisLabels[it])
             }
@@ -178,8 +178,6 @@ class MainActivity : AppCompatActivity() {
             bindingMain.nwChart.visibility = View.INVISIBLE
             Log.e("mainActivity", "Chart not processed as there is no data.")
         }
-
-
 
 
     }

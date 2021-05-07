@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bindingAddAsset: DialogAddAssetBinding
     private lateinit var bindingAddLiability: DialogAddLiabilityBinding
 
-    private lateinit var bindingDMYPicker: DayMonthYearPickerBinding
+    private lateinit var bindingMYPicker: MonthYearPickerBinding
 
     private val gbpFormatter: NumberFormat = DecimalFormat("#,##0")
     private val gbpFormatterP: NumberFormat = DecimalFormat("#,##0.00")
@@ -124,12 +124,12 @@ class MainActivity : AppCompatActivity() {
             chartLine.data = dataLine
         }
 
-        dataLine.setDrawValues(false)
+        //dataLine.setDrawValues(false)
 
-        dataSetLine.setDrawFilled(true)
-        dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
+        //dataSetLine.setDrawFilled(true)
+        //dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
 
-        dataSetLine.setDrawCircles(false)
+        //dataSetLine.setDrawCircles(false)
 
         chartLine.animateY(800)
         chartLine.setNoDataText("No valuations added yet.")
@@ -145,11 +145,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        chartLine.axisLeft.setDrawLabels(false)
-        chartLine.axisLeft.setDrawGridLines(false)
-        chartLine.xAxis.setDrawAxisLine(false)
-        chartLine.axisLeft.setDrawAxisLine(false)
-        chartLine.setTouchEnabled(false)
+        //chartLine.axisLeft.setDrawLabels(false)
+        //chartLine.axisLeft.setDrawGridLines(false)
+        //chartLine.xAxis.setDrawAxisLine(false)
+        //chartLine.axisLeft.setDrawAxisLine(false)
+        //chartLine.setTouchEnabled(false)
         chartLine.axisRight.isEnabled = false
         chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chartLine.legend.isEnabled = false
@@ -284,86 +284,45 @@ class MainActivity : AppCompatActivity() {
 
         bindingAddAsset.colourPicker.showOldCenterColor = false
 
-        var dayPicked = Calendar.getInstance()[Calendar.DAY_OF_MONTH]
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddAsset.date.text = "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+        bindingAddAsset.date.text = "${Globals.getShortMonth(monthPicked)} $yearPicked"
 
         bindingAddAsset.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
             changeDateDialog.setCancelable(false)
-            bindingDMYPicker = DayMonthYearPickerBinding.inflate(layoutInflater)
-            val viewDMYP = bindingDMYPicker.root
+            bindingMYPicker = MonthYearPickerBinding.inflate(layoutInflater)
+            val viewDMYP = bindingMYPicker.root
             changeDateDialog.setContentView(viewDMYP)
             changeDateDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 4 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 6 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 9 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 11) {
-                bindingDMYPicker.dmypDay.maxValue = 30
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 2 && (Calendar.getInstance()[Calendar.DAY_OF_MONTH] % 4 == 0)) {
-                bindingDMYPicker.dmypDay.maxValue = 29
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 2 && (Calendar.getInstance()[Calendar.DAY_OF_MONTH] % 4 != 0)) {
-                bindingDMYPicker.dmypDay.maxValue = 28
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else {
-                bindingDMYPicker.dmypDay.maxValue = 31
-                bindingDMYPicker.dmypDay.minValue = 1
-            }
+            bindingMYPicker.mypMonth.maxValue = 12
+            bindingMYPicker.mypMonth.minValue = 1
+            bindingMYPicker.mypYear.maxValue = 2999
+            bindingMYPicker.mypYear.minValue = 1000
 
-            bindingDMYPicker.dmypMonth.maxValue = 12
-            bindingDMYPicker.dmypMonth.minValue = 1
-            bindingDMYPicker.dmypYear.maxValue = 2999
-            bindingDMYPicker.dmypYear.minValue = 1000
+            bindingMYPicker.mypMonth.value = monthPicked
+            bindingMYPicker.mypYear.value = yearPicked
 
-            bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked
-            bindingDMYPicker.dmypYear.value = yearPicked
+            bindingMYPicker.mypMonth.displayedValues = Globals.monthsShortArray
 
-            bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
-
-            bindingDMYPicker.dmypDay.setOnValueChangedListener { _, _, newVal ->
-                dayPicked = newVal
-            }
-
-            bindingDMYPicker.dmypMonth.setOnValueChangedListener { _, _, newVal ->
-                if (newVal == 4 || newVal == 6 || newVal == 9 || newVal == 11) {
-                    bindingDMYPicker.dmypDay.maxValue = 30
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal == 2 && (bindingDMYPicker.dmypYear.value % 4 == 0)) {
-                    bindingDMYPicker.dmypDay.maxValue = 29
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal == 2 && (bindingDMYPicker.dmypYear.value % 4 != 0)) {
-                    bindingDMYPicker.dmypDay.maxValue = 28
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else {
-                    bindingDMYPicker.dmypDay.maxValue = 31
-                    bindingDMYPicker.dmypDay.minValue = 1
-                }
+            bindingMYPicker.mypMonth.setOnValueChangedListener { _, _, newVal ->
                 monthPicked = newVal
             }
 
-            bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->
-                if (newVal % 4 == 0 && bindingDMYPicker.dmypMonth.value == 2) {
-                    bindingDMYPicker.dmypDay.maxValue = 29
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal % 4 != 0 && bindingDMYPicker.dmypMonth.value == 2) {
-                    bindingDMYPicker.dmypDay.maxValue = 28
-                    bindingDMYPicker.dmypDay.minValue = 1
-                }
+            bindingMYPicker.mypYear.setOnValueChangedListener { _, _, newVal ->
                 yearPicked = newVal
             }
 
-            bindingDMYPicker.submitDmy.setOnClickListener {
+            bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddAsset.date.text =
-                    "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+                    "${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
-            bindingDMYPicker.dmypDay.wrapSelectorWheel = true
-            bindingDMYPicker.dmypMonth.wrapSelectorWheel = true
-            bindingDMYPicker.dmypYear.wrapSelectorWheel = true
+            bindingMYPicker.mypMonth.wrapSelectorWheel = true
+            bindingMYPicker.mypYear.wrapSelectorWheel = true
 
             changeDateDialog.show()
 
@@ -372,7 +331,7 @@ class MainActivity : AppCompatActivity() {
         bindingAddAsset.tvAdd.setOnClickListener {
 
             val calendar = Calendar.getInstance()
-            calendar.set(yearPicked, monthPicked - 1, dayPicked)
+            calendar.set(yearPicked, monthPicked - 1, 1)
 
             val name = bindingAddAsset.etName.text.toString()
             val value = bindingAddAsset.etValue.text.toString()
@@ -428,87 +387,45 @@ class MainActivity : AppCompatActivity() {
 
         bindingAddLiability.colourPicker.showOldCenterColor = false
 
-        var dayPicked = Calendar.getInstance()[Calendar.DAY_OF_MONTH]
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddLiability.date.text =
-            "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+        bindingAddLiability.date.text = "${Globals.getShortMonth(monthPicked)} $yearPicked"
 
         bindingAddLiability.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
             changeDateDialog.setCancelable(false)
-            bindingDMYPicker = DayMonthYearPickerBinding.inflate(layoutInflater)
-            val viewDMYP = bindingDMYPicker.root
+            bindingMYPicker = MonthYearPickerBinding.inflate(layoutInflater)
+            val viewDMYP = bindingMYPicker.root
             changeDateDialog.setContentView(viewDMYP)
             changeDateDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 4 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 6 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 9 || Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 11) {
-                bindingDMYPicker.dmypDay.maxValue = 30
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 2 && (Calendar.getInstance()[Calendar.DAY_OF_MONTH] % 4 == 0)) {
-                bindingDMYPicker.dmypDay.maxValue = 29
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else if (Calendar.getInstance()[Calendar.DAY_OF_MONTH] == 2 && (Calendar.getInstance()[Calendar.DAY_OF_MONTH] % 4 != 0)) {
-                bindingDMYPicker.dmypDay.maxValue = 28
-                bindingDMYPicker.dmypDay.minValue = 1
-            } else {
-                bindingDMYPicker.dmypDay.maxValue = 31
-                bindingDMYPicker.dmypDay.minValue = 1
-            }
+            bindingMYPicker.mypMonth.maxValue = 12
+            bindingMYPicker.mypMonth.minValue = 1
+            bindingMYPicker.mypYear.maxValue = 2999
+            bindingMYPicker.mypYear.minValue = 1000
 
-            bindingDMYPicker.dmypMonth.maxValue = 12
-            bindingDMYPicker.dmypMonth.minValue = 1
-            bindingDMYPicker.dmypYear.maxValue = 2999
-            bindingDMYPicker.dmypYear.minValue = 1000
+            bindingMYPicker.mypMonth.value = monthPicked
+            bindingMYPicker.mypYear.value = yearPicked
 
-            bindingDMYPicker.dmypDay.value = dayPicked
-            bindingDMYPicker.dmypMonth.value = monthPicked
-            bindingDMYPicker.dmypYear.value = yearPicked
+            bindingMYPicker.mypMonth.displayedValues = Globals.monthsShortArray
 
-            bindingDMYPicker.dmypMonth.displayedValues = Globals.monthsShortArray
-
-            bindingDMYPicker.dmypDay.setOnValueChangedListener { _, _, newVal ->
-                dayPicked = newVal
-            }
-
-            bindingDMYPicker.dmypMonth.setOnValueChangedListener { _, _, newVal ->
-                if (newVal == 4 || newVal == 6 || newVal == 9 || newVal == 11) {
-                    bindingDMYPicker.dmypDay.maxValue = 30
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal == 2 && (bindingDMYPicker.dmypYear.value % 4 == 0)) {
-                    bindingDMYPicker.dmypDay.maxValue = 29
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal == 2 && (bindingDMYPicker.dmypYear.value % 4 != 0)) {
-                    bindingDMYPicker.dmypDay.maxValue = 28
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else {
-                    bindingDMYPicker.dmypDay.maxValue = 31
-                    bindingDMYPicker.dmypDay.minValue = 1
-                }
+            bindingMYPicker.mypMonth.setOnValueChangedListener { _, _, newVal ->
                 monthPicked = newVal
             }
 
-            bindingDMYPicker.dmypYear.setOnValueChangedListener { _, _, newVal ->
-                if (newVal % 4 == 0 && bindingDMYPicker.dmypMonth.value == 2) {
-                    bindingDMYPicker.dmypDay.maxValue = 29
-                    bindingDMYPicker.dmypDay.minValue = 1
-                } else if (newVal % 4 != 0 && bindingDMYPicker.dmypMonth.value == 2) {
-                    bindingDMYPicker.dmypDay.maxValue = 28
-                    bindingDMYPicker.dmypDay.minValue = 1
-                }
+            bindingMYPicker.mypYear.setOnValueChangedListener { _, _, newVal ->
                 yearPicked = newVal
             }
 
-            bindingDMYPicker.submitDmy.setOnClickListener {
+            bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddLiability.date.text =
-                    "$dayPicked ${Globals.getShortMonth(monthPicked)} $yearPicked"
+                    "${Globals.getShortMonth(monthPicked)} $yearPicked"
                 changeDateDialog.dismiss()
             }
 
-            bindingDMYPicker.dmypDay.wrapSelectorWheel = true
-            bindingDMYPicker.dmypMonth.wrapSelectorWheel = true
-            bindingDMYPicker.dmypYear.wrapSelectorWheel = true
+            bindingMYPicker.mypMonth.wrapSelectorWheel = true
+            bindingMYPicker.mypYear.wrapSelectorWheel = true
 
             changeDateDialog.show()
 
@@ -517,7 +434,7 @@ class MainActivity : AppCompatActivity() {
         bindingAddLiability.tvAdd.setOnClickListener {
 
             val calendar = Calendar.getInstance()
-            calendar.set(yearPicked, monthPicked - 1, dayPicked)
+            calendar.set(yearPicked, monthPicked - 1, 1)
 
             val name = bindingAddLiability.etName.text.toString()
             val value = bindingAddLiability.etValue.text.toString()

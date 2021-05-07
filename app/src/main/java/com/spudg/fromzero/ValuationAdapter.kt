@@ -32,7 +32,7 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
             val cal = Calendar.getInstance()
             cal.timeInMillis = valuation.date.toLong()
             binding.date.text =
-                "${cal.get(Calendar.DAY_OF_MONTH)} ${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${
+                "${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${
                     cal.get(Calendar.YEAR)
                 }"
 

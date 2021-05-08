@@ -100,7 +100,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
 
     }
 
-    fun getAveNetWorthForMonthYear(monthNo: Int): String {
+    fun getNetWorthForMonthYear(monthNo: Int): String {
         val valuations = ArrayList<ValuationModel>()
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)

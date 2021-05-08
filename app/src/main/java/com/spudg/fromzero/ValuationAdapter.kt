@@ -28,7 +28,14 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
         with(holder) {
             val valuation = items[position]
 
-            binding.value.text = formatter.format(valuation.value.toFloat())
+            if (context is ValuationActivity) {
+                if (context.isAsset(valuation.al)) {
+                    binding.value.text = formatter.format(valuation.value.toFloat())
+                } else {
+                    binding.value.text = formatter.format(valuation.value.toFloat()*-1)
+                }
+            }
+
             val cal = Calendar.getInstance()
             cal.timeInMillis = valuation.date.toLong()
             binding.date.text =

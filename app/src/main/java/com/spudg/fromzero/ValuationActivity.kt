@@ -246,6 +246,11 @@ class ValuationActivity : AppCompatActivity() {
 
     }
 
+    fun isAsset(alID: Int): Boolean {
+        val alHandler = ALHandler(this, null)
+        return alHandler.isAsset(alID)
+    }
+
     private fun getValuationList(al: Int): ArrayList<ValuationModel> {
         val dbHandler = ValuationHandler(this, null)
         val result = dbHandler.getValuationsForAL(al)
@@ -397,12 +402,18 @@ class ValuationActivity : AppCompatActivity() {
         updateDialog.setContentView(view)
         updateDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        val alHander = ALHandler(this, null)
+
         val cal = Calendar.getInstance()
         cal.timeInMillis = valuation.date.toLong()
         var monthPicked = cal.get(Calendar.MONTH)
         var yearPicked = cal.get(Calendar.YEAR)
 
-        bindingUpdateValuation.etValue.setText(valuation.value)
+        if (alHander.isAsset(Globals.alSelected)) {
+            bindingUpdateValuation.etValue.setText((valuation.value.toFloat()).toString())
+        } else {
+            bindingUpdateValuation.etValue.setText((valuation.value.toFloat()*-1).toString())
+        }
 
         bindingUpdateValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
 
@@ -476,11 +487,13 @@ class ValuationActivity : AppCompatActivity() {
                 }
             }
 
-            val value: String = if (alHandler.isAsset(Globals.alSelected)) {
-                bindingUpdateValuation.etValue.text.toString()
+            var value = "0"
+            if (alHandler.isAsset(Globals.alSelected)) {
+                value = bindingUpdateValuation.etValue.text.toString()
             } else {
-                ((bindingUpdateValuation.etValue.text.toString().toFloat()) * -1).toString()
+                value = (bindingUpdateValuation.etValue.text.toString().toFloat()*-1).toString()
             }
+
 
             if (value.isNotEmpty()) {
 

@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
                 }
-                yAxisLabels.add(valuationHandler.getAveNetWorthForMonthYear(it + earliestMonthNo - 1))
+                yAxisLabels.add(valuationHandler.getNetWorthForMonthYear(it + earliestMonthNo - 1))
                 Log.e("test", xAxisLabels[it])
                 Log.e("test", yAxisLabels[it])
             }
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
                 runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id)
                     .toFloat()
             }
-            bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
+            bindingMain.liabilityTotal.text = gbpFormatter.format(-runningLiabilityTotal)
 
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE
@@ -495,7 +495,12 @@ class MainActivity : AppCompatActivity() {
 
     fun getALValue(al: ALModel): String {
         val valuationHandler = ValuationHandler(this, null)
-        return valuationHandler.getLatestValuationForAL(al.id)
+        val alHandler = ALHandler(this, null)
+        return if (alHandler.isAsset(al.id)) {
+            valuationHandler.getLatestValuationForAL(al.id)
+        } else {
+            (valuationHandler.getLatestValuationForAL(al.id).toFloat() * -1).toString()
+        }
     }
 
 

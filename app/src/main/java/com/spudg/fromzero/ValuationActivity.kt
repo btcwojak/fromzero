@@ -402,14 +402,15 @@ class ValuationActivity : AppCompatActivity() {
         updateDialog.setContentView(view)
         updateDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val alHander = ALHandler(this, null)
+        val alHandler = ALHandler(this, null)
+        val valuationHandler = ValuationHandler(this, null)
 
         val cal = Calendar.getInstance()
         cal.timeInMillis = valuation.date.toLong()
         var monthPicked = cal.get(Calendar.MONTH)
         var yearPicked = cal.get(Calendar.YEAR)
 
-        if (alHander.isAsset(Globals.alSelected)) {
+        if (alHandler.isAsset(Globals.alSelected)) {
             bindingUpdateValuation.etValue.setText((valuation.value.toFloat()).toString())
         } else {
             bindingUpdateValuation.etValue.setText((valuation.value.toFloat()*-1).toString())
@@ -458,9 +459,6 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingUpdateValuation.tvUpdate.setOnClickListener {
 
-            val valuationHandler = ValuationHandler(this, null)
-            val alHandler = ALHandler(this, null)
-
             var valExistsForMonthYear = false
 
             val calForExisting = Calendar.getInstance()
@@ -496,7 +494,6 @@ class ValuationActivity : AppCompatActivity() {
             if (value.isNotEmpty()) {
 
                 if (!valExistsForMonthYear) {
-                    val valuationHandler = ValuationHandler(this, null)
 
                     valuationHandler.updateValuation(
                         ValuationModel(

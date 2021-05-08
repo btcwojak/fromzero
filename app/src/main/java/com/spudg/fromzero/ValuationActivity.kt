@@ -487,13 +487,11 @@ class ValuationActivity : AppCompatActivity() {
                 }
             }
 
-            var value = "0"
-            if (alHandler.isAsset(Globals.alSelected)) {
-                value = bindingUpdateValuation.etValue.text.toString()
+            val value: String = if (alHandler.isAsset(Globals.alSelected)) {
+                bindingUpdateValuation.etValue.text.toString()
             } else {
-                value = (bindingUpdateValuation.etValue.text.toString().toFloat()*-1).toString()
+                (bindingUpdateValuation.etValue.text.toString().toFloat()*-1).toString()
             }
-
 
             if (value.isNotEmpty()) {
 

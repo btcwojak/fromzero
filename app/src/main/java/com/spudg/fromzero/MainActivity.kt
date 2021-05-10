@@ -152,6 +152,7 @@ class MainActivity : AppCompatActivity() {
             chartLine.axisLeft.setDrawGridLines(false)
             chartLine.xAxis.setDrawAxisLine(false)
             chartLine.axisLeft.setDrawAxisLine(false)
+            chartLine.xAxis.setDrawLabels(false)
             chartLine.setTouchEnabled(false)
             chartLine.axisRight.isEnabled = false
             chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM

@@ -413,7 +413,7 @@ class ValuationActivity : AppCompatActivity() {
         if (alHandler.isAsset(Globals.alSelected)) {
             bindingUpdateValuation.etValue.setText((valuation.value.toFloat()).toString())
         } else {
-            bindingUpdateValuation.etValue.setText((valuation.value.toFloat()*-1).toString())
+            bindingUpdateValuation.etValue.setText((valuation.value.toFloat() * -1).toString())
         }
 
         bindingUpdateValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
@@ -488,7 +488,7 @@ class ValuationActivity : AppCompatActivity() {
             val value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingUpdateValuation.etValue.text.toString()
             } else {
-                (bindingUpdateValuation.etValue.text.toString().toFloat()*-1).toString()
+                (bindingUpdateValuation.etValue.text.toString().toFloat() * -1).toString()
             }
 
             if (value.isNotEmpty()) {

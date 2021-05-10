@@ -10,21 +10,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:elevation="25dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:background="@drawable/btn_about_background"
-            android:elevation="25dp"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content">
+            android:elevation="25dp">
 
             <TextView
                 android:id="@+id/about_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
@@ -32,7 +33,6 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:paddingTop="10dp"
-                android:layout_marginStart="5dp"
                 android:paddingBottom="10dp"
                 android:text="About"
                 android:textColor="@color/colorAccent"
@@ -43,15 +43,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="start">
+            android:gravity="start"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/latestNetWorth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/open_sans_light"
                 android:text="0"
                 android:textColor="#000000"
@@ -61,8 +61,8 @@
             <TextView
                 android:id="@+id/latestNetWorthLabel"
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/open_sans_light"
                 android:text="Latest net worth"

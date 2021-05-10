@@ -32,7 +32,7 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
                 if (context.isAsset(valuation.al)) {
                     binding.value.text = formatter.format(valuation.value.toFloat())
                 } else {
-                    binding.value.text = formatter.format(valuation.value.toFloat()*-1)
+                    binding.value.text = formatter.format(valuation.value.toFloat() * -1)
                 }
             }
 

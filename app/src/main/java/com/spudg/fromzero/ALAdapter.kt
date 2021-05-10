@@ -2,6 +2,7 @@ package com.spudg.fromzero
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spudg.fromzero.databinding.AssetLiabilityRowBinding
@@ -34,6 +35,14 @@ class ALAdapter(private val context: Context, private val items: ArrayList<ALMod
             binding.colour.setBackgroundColor(al.colour.toInt())
             binding.name.text = al.name
             binding.note.text = al.note
+
+            if (context is MainActivity) {
+                if (context.getLatestValuationForAL(al.id).toFloat() == 0F) {
+                    binding.value.textSize = 12F
+                    binding.name.textSize = 12F
+                    binding.note.visibility = View.GONE
+                }
+            }
 
             binding.innerRowLayout.setOnClickListener {
                 if (context is MainActivity) {

@@ -11,7 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -49,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         setUpLiabilityList()
         setUpNetWorthHeading()
         setUpChart()
-
 
         bindingMain.addAssetLiability.setOnClickListener {
             val assetLiabilityDialog = Dialog(this, R.style.Theme_Dialog)
@@ -204,6 +206,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAssetList(): ArrayList<ALModel> {
         val dbHandler = ALHandler(this, null)
         val result = dbHandler.getAllAssets()
+        result.sortByDescending { getLatestValuationForAL(it.id).toFloat() }
         dbHandler.close()
         return result
     }
@@ -211,8 +214,14 @@ class MainActivity : AppCompatActivity() {
     private fun getLiabilityList(): ArrayList<ALModel> {
         val dbHandler = ALHandler(this, null)
         val result = dbHandler.getAllLiabilities()
+        result.sortByDescending { getLatestValuationForAL(it.id).toFloat() }
         dbHandler.close()
         return result
+    }
+
+    fun getLatestValuationForAL(id: Int): String {
+        val valuationHandler = ValuationHandler(this, null)
+        return valuationHandler.getLatestValuationForAL(id)
     }
 
     private fun setUpAssetList() {
@@ -265,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                 runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id)
                     .toFloat()
             }
-            bindingMain.liabilityTotal.text = gbpFormatter.format(-runningLiabilityTotal)
+            bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
 
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE

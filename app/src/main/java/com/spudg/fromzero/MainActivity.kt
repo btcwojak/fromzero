@@ -78,34 +78,35 @@ class MainActivity : AppCompatActivity() {
         val valuationHandler = ValuationHandler(this, null)
         val valuations = valuationHandler.getAllValuations()
 
-        if (valuations.size > 0) {
-            val earliestValuationDate = valuations.sortedBy { it.date }.first().date
-            val calEarly = Calendar.getInstance()
-            calEarly.timeInMillis = earliestValuationDate.toLong()
-            val earliestMonth = calEarly.get(Calendar.MONTH) + 1
-            val earliestYear = calEarly.get(Calendar.YEAR)
-            val earliestMonthNo = (earliestYear * 12) + earliestMonth
+        val earliestValuationDate = valuations.sortedBy { it.date }.first().date
+        val calEarly = Calendar.getInstance()
+        calEarly.timeInMillis = earliestValuationDate.toLong()
+        val earliestMonth = calEarly.get(Calendar.MONTH) + 1
+        val earliestYear = calEarly.get(Calendar.YEAR)
+        val earliestMonthNo = (earliestYear * 12) + earliestMonth
 
-            val latestValuationDate = valuations.sortedBy { it.date }.last().date
-            val calLate = Calendar.getInstance()
-            calLate.timeInMillis = latestValuationDate.toLong()
-            val latestMonth = calLate.get(Calendar.MONTH)
-            val latestYear = calLate.get(Calendar.YEAR)
-            val latestMonthNo = (latestYear * 12) + latestMonth
+        val latestValuationDate = valuations.sortedBy { it.date }.last().date
+        val calLate = Calendar.getInstance()
+        calLate.timeInMillis = latestValuationDate.toLong()
+        val latestMonth = calLate.get(Calendar.MONTH)
+        val latestYear = calLate.get(Calendar.YEAR)
+        val latestMonthNo = (latestYear * 12) + latestMonth
 
-            val numberOfXAxis = latestMonthNo - earliestMonthNo
+        val numberOfXAxis = latestMonthNo - earliestMonthNo + 2
+        Log.e("test",numberOfXAxis.toString())
 
+        if (numberOfXAxis > 1) {
+            bindingMain.nwChart.visibility = View.VISIBLE
+            bindingMain.tvNoDataForChart.visibility = View.GONE
             val xAxisLabels = arrayListOf<String>()
             val yAxisLabels = arrayListOf<String>()
-            repeat(numberOfXAxis + 2) {
+            repeat(numberOfXAxis) {
                 if (((it + earliestMonth) % 12).toString().toInt() == 0) {
                     xAxisLabels.add(Globals.getShortMonth(12))
                 } else {
                     xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
                 }
                 yAxisLabels.add(valuationHandler.getNetWorthForMonthYear(it + earliestMonthNo - 1))
-                Log.e("test", xAxisLabels[it])
-                Log.e("test", yAxisLabels[it])
             }
 
             val lineEntries: ArrayList<BarEntry> = arrayListOf()
@@ -175,7 +176,8 @@ class MainActivity : AppCompatActivity() {
 
             chartLine.invalidate()
         } else {
-            bindingMain.nwChart.visibility = View.INVISIBLE
+            bindingMain.nwChart.visibility = View.GONE
+            bindingMain.tvNoDataForChart.visibility = View.VISIBLE
             Log.e("mainActivity", "Chart not processed as there is no data.")
         }
 
@@ -212,7 +214,7 @@ class MainActivity : AppCompatActivity() {
     private fun getLiabilityList(): ArrayList<ALModel> {
         val dbHandler = ALHandler(this, null)
         val result = dbHandler.getAllLiabilities()
-        result.sortByDescending { getLatestValuationForAL(it.id).toFloat() }
+        result.sortBy { getLatestValuationForAL(it.id).toFloat() }
         dbHandler.close()
         return result
     }
@@ -272,7 +274,12 @@ class MainActivity : AppCompatActivity() {
                 runningLiabilityTotal += valuationHandler.getLatestValuationForAL(liability.id)
                     .toFloat()
             }
-            bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
+            if (runningLiabilityTotal != 0F) {
+                bindingMain.liabilityTotal.text = gbpFormatter.format(-runningLiabilityTotal)
+            } else {
+                bindingMain.liabilityTotal.text = gbpFormatter.format(runningLiabilityTotal)
+            }
+
 
         } else {
             bindingMain.rvLiabilities.visibility = View.GONE
@@ -503,10 +510,15 @@ class MainActivity : AppCompatActivity() {
     fun getALValue(al: ALModel): String {
         val valuationHandler = ValuationHandler(this, null)
         val alHandler = ALHandler(this, null)
+        val valuation = valuationHandler.getLatestValuationForAL(al.id)
         return if (alHandler.isAsset(al.id)) {
-            valuationHandler.getLatestValuationForAL(al.id)
+            valuation
         } else {
-            (valuationHandler.getLatestValuationForAL(al.id).toFloat() * -1).toString()
+            if (valuation.toFloat() < 0) {
+                (valuation.toFloat() * -1).toString()
+            } else {
+                "0.00"
+            }
         }
     }
 

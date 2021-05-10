@@ -30,6 +30,7 @@ class ALAdapter(private val context: Context, private val items: ArrayList<ALMod
             val al = items[position]
 
             if (context is MainActivity) {
+
                 binding.value.text = formatter.format(context.getALValue(al).toFloat())
             }
             binding.colour.setBackgroundColor(al.colour.toInt())

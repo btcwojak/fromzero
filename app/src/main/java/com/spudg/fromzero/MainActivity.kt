@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         val latestMonthNo = (latestYear * 12) + latestMonth
 
         val numberOfXAxis = latestMonthNo - earliestMonthNo + 2
-        Log.e("test",numberOfXAxis.toString())
 
         if (numberOfXAxis > 1) {
             bindingMain.nwChart.visibility = View.VISIBLE
@@ -178,7 +177,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             bindingMain.nwChart.visibility = View.GONE
             bindingMain.tvNoDataForChart.visibility = View.VISIBLE
-            Log.e("mainActivity", "Chart not processed as there is no data.")
+            Log.e("mainActivity", "Chart not processed as there is not enough data.")
         }
 
 

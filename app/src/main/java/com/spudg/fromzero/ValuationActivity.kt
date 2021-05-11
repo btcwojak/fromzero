@@ -69,6 +69,7 @@ class ValuationActivity : AppCompatActivity() {
 
         if (getValuationList(Globals.alSelected).size > 1) {
             bindingValuation.valuationChart.visibility = View.VISIBLE
+            bindingValuation.tvNoDataForChart.visibility = View.GONE
 
             val valuationHandler = ValuationHandler(this, null)
             val valuations = valuationHandler.getValuationsForAL(Globals.alSelected)
@@ -133,6 +134,7 @@ class ValuationActivity : AppCompatActivity() {
             chartLine.invalidate()
         } else {
             bindingValuation.valuationChart.visibility = View.GONE
+            bindingValuation.tvNoDataForChart.visibility = View.VISIBLE
         }
 
 
@@ -196,6 +198,7 @@ class ValuationActivity : AppCompatActivity() {
         val originalAL = alHandler.getAL(Globals.alSelected)
 
         bindingUpdateAL.etName.setText(originalAL.name)
+        bindingUpdateAL.etNote.setText(originalAL.note)
         bindingUpdateAL.colourPicker.color = originalAL.colour.toInt()
         bindingUpdateAL.colourPicker.showOldCenterColor = false
 
@@ -207,8 +210,9 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingUpdateAL.tvUpdate.setOnClickListener {
             val name = bindingUpdateAL.etName.text.toString()
+            val note = bindingUpdateAL.etNote.text.toString()
             val colour = bindingUpdateAL.colourPicker.color.toString()
-            val updatedAL = ALModel(originalAL.id, originalAL.al, name, originalAL.note, colour)
+            val updatedAL = ALModel(originalAL.id, originalAL.al, name, note, colour)
             if (name.isNotEmpty()) {
                 alHandler.updateAL(updatedAL)
                 setUpTitles()

@@ -38,7 +38,8 @@ class ValuationAdapter(private val context: Context, private val items: ArrayLis
 
             val cal = Calendar.getInstance()
             cal.timeInMillis = valuation.date.toLong()
-            binding.date.text = "${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${cal.get(Calendar.YEAR)}"
+            binding.date.text =
+                "${Globals.getShortMonth(cal.get(Calendar.MONTH) + 1)} ${cal.get(Calendar.YEAR)}"
 
             binding.mainRowLayout.setOnClickListener {
                 if (context is ValuationActivity) {

@@ -309,7 +309,11 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddAsset.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
+        bindingAddAsset.date.text = getString(
+            R.string.month_year,
+            Globals.getShortMonth(monthPicked),
+            yearPicked.toString()
+        )
 
         bindingAddAsset.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -339,7 +343,11 @@ class MainActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddAsset.date.text =
-                    getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
+                    getString(
+                        R.string.month_year,
+                        Globals.getShortMonth(monthPicked),
+                        yearPicked.toString()
+                    )
                 changeDateDialog.dismiss()
             }
 
@@ -413,7 +421,11 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddLiability.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
+        bindingAddLiability.date.text = getString(
+            R.string.month_year,
+            Globals.getShortMonth(monthPicked),
+            yearPicked.toString()
+        )
 
         bindingAddLiability.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -443,7 +455,11 @@ class MainActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddLiability.date.text =
-                    getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
+                    getString(
+                        R.string.month_year,
+                        Globals.getShortMonth(monthPicked),
+                        yearPicked.toString()
+                    )
                 changeDateDialog.dismiss()
             }
 

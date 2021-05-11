@@ -30,6 +30,7 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FromZero" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

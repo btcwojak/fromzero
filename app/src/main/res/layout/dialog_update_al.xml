@@ -19,17 +19,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans_light"
-            android:text="Update [asset/liability]"
+            android:text="@string/update_asset_liability"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="horizontal"></LinearLayout>
 
     <com.larswerkman.holocolorpicker.ColorPicker
         android:id="@+id/colourPicker"
@@ -59,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -85,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="Note"
+                android:hint="@string/note"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -107,7 +101,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="@color/colorAccent" />
 
         <TextView
@@ -118,7 +112,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/black" />
 
     </LinearLayout>

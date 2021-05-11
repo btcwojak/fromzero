@@ -18,7 +18,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans_light"
-            android:text="Update valuation"
+            android:text="@string/update_valuation"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -37,7 +37,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans_light"
-            android:text="Date"
+            android:text="@string/date"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -48,7 +48,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/open_sans_light"
-            android:text="19 April 2021"
+            android:text="@string/_19_april_2021"
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
@@ -81,7 +81,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/open_sans_light"
-                android:hint="Value"
+                android:hint="@string/value"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -103,7 +103,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="@color/colorAccent" />
 
         <TextView
@@ -114,7 +114,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/black" />
 
     </LinearLayout>

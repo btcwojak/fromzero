@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bindingMYPicker: MonthYearPickerBinding
 
     private val gbpFormatter: NumberFormat = DecimalFormat("#,##0")
-    private val gbpFormatterP: NumberFormat = DecimalFormat("#,##0.00")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,14 +82,14 @@ class MainActivity : AppCompatActivity() {
         val valuationHandler = ValuationHandler(this, null)
         val valuations = valuationHandler.getAllValuations()
 
-        val earliestValuationDate = valuations.sortedBy { it.date }.first().date
+        val earliestValuationDate = valuations.minByOrNull { it.date }!!.date
         val calEarly = Calendar.getInstance()
         calEarly.timeInMillis = earliestValuationDate.toLong()
         val earliestMonth = calEarly.get(Calendar.MONTH) + 1
         val earliestYear = calEarly.get(Calendar.YEAR)
         val earliestMonthNo = (earliestYear * 12) + earliestMonth
 
-        val latestValuationDate = valuations.sortedBy { it.date }.last().date
+        val latestValuationDate = valuations.maxByOrNull { it.date }!!.date
         val calLate = Calendar.getInstance()
         calLate.timeInMillis = latestValuationDate.toLong()
         val latestMonth = calLate.get(Calendar.MONTH)
@@ -310,7 +309,7 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddAsset.date.text = "${Globals.getShortMonth(monthPicked)} $yearPicked"
+        bindingAddAsset.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
 
         bindingAddAsset.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -340,7 +339,7 @@ class MainActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddAsset.date.text =
-                    "${Globals.getShortMonth(monthPicked)} $yearPicked"
+                    getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
                 changeDateDialog.dismiss()
             }
 
@@ -414,7 +413,7 @@ class MainActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddLiability.date.text = "${Globals.getShortMonth(monthPicked)} $yearPicked"
+        bindingAddLiability.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
 
         bindingAddLiability.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -444,7 +443,7 @@ class MainActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddLiability.date.text =
-                    "${Globals.getShortMonth(monthPicked)} $yearPicked"
+                    getString(R.string.month_year, Globals.getShortMonth(monthPicked), yearPicked.toString())
                 changeDateDialog.dismiss()
             }
 

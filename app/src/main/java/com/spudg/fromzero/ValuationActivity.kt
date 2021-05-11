@@ -152,11 +152,11 @@ class ValuationActivity : AppCompatActivity() {
         val alHandler = ALHandler(this, null)
 
         if (alHandler.isAsset(Globals.alSelected)) {
-            bindingDeleteAL.deleteALTitle.text = "Delete asset"
-            bindingDeleteAL.deleteALWarning.text = "Are you sure you want to delete this asset?"
+            bindingDeleteAL.deleteALTitle.text = getString(R.string.delete_asset)
+            bindingDeleteAL.deleteALWarning.text = getString(R.string.delete_asset_warn)
         } else {
-            bindingDeleteAL.deleteALTitle.text = "Delete liability"
-            bindingDeleteAL.deleteALWarning.text = "Are you sure you want to delete this liability?"
+            bindingDeleteAL.deleteALTitle.text = getString(R.string.delete_liability)
+            bindingDeleteAL.deleteALWarning.text = getString(R.string.delete_liability_warn)
         }
 
         bindingDeleteAL.tvDelete.setOnClickListener {
@@ -203,9 +203,9 @@ class ValuationActivity : AppCompatActivity() {
         bindingUpdateAL.colourPicker.showOldCenterColor = false
 
         if (originalAL.al == 1) {
-            bindingUpdateAL.updateALTitle.text = "Update asset"
+            bindingUpdateAL.updateALTitle.text = getString(R.string.update_asset)
         } else {
-            bindingUpdateAL.updateALTitle.text = "Update liability"
+            bindingUpdateAL.updateALTitle.text = getString(R.string.update_liability)
         }
 
         bindingUpdateAL.tvUpdate.setOnClickListener {
@@ -239,9 +239,9 @@ class ValuationActivity : AppCompatActivity() {
 
         bindingValuation.alTitle.text = dbHandler.getALName(Globals.alSelected)
         if (dbHandler.isAsset(Globals.alSelected)) {
-            bindingValuation.assetOrLiability.text = "Asset"
+            bindingValuation.assetOrLiability.text = getString(R.string.asset)
         } else {
-            bindingValuation.assetOrLiability.text = "Liability"
+            bindingValuation.assetOrLiability.text = getString(R.string.liability)
         }
 
         bindingValuation.alColour.setBackgroundColor(
@@ -288,7 +288,7 @@ class ValuationActivity : AppCompatActivity() {
         var monthPicked = Calendar.getInstance()[Calendar.MONTH]
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
 
-        bindingAddValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+        bindingAddValuation.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked+1), yearPicked.toString())
 
         bindingAddValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -318,7 +318,7 @@ class ValuationActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingAddValuation.date.text =
-                    "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+                    getString(R.string.month_year, Globals.getShortMonth(monthPicked+1), yearPicked.toString())
                 changeDateDialog.dismiss()
             }
 
@@ -348,7 +348,7 @@ class ValuationActivity : AppCompatActivity() {
             val calendar = Calendar.getInstance()
             calendar.set(yearPicked, monthPicked, 1)
 
-            var value: String = if (alHandler.isAsset(Globals.alSelected)) {
+            val value: String = if (alHandler.isAsset(Globals.alSelected)) {
                 bindingAddValuation.etValue.text.toString()
             } else {
                 ((bindingAddValuation.etValue.text.toString().toFloat()) * -1).toString()
@@ -359,7 +359,6 @@ class ValuationActivity : AppCompatActivity() {
             if (value.isNotEmpty()) {
 
                 if (!valExistsForMonthYear) {
-                    val valuationHandler = ValuationHandler(this, null)
 
                     valuationHandler.addValuation(
                         ValuationModel(
@@ -420,7 +419,7 @@ class ValuationActivity : AppCompatActivity() {
             bindingUpdateValuation.etValue.setText((valuation.value.toFloat() * -1).toString())
         }
 
-        bindingUpdateValuation.date.text = "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+        bindingUpdateValuation.date.text = getString(R.string.month_year, Globals.getShortMonth(monthPicked+1), yearPicked.toString())
 
         bindingUpdateValuation.date.setOnClickListener {
             val changeDateDialog = Dialog(this, R.style.Theme_Dialog)
@@ -450,7 +449,7 @@ class ValuationActivity : AppCompatActivity() {
 
             bindingMYPicker.submitDmy.setOnClickListener {
                 bindingUpdateValuation.date.text =
-                    "${Globals.getShortMonth(monthPicked + 1)} $yearPicked"
+                    getString(R.string.month_year, Globals.getShortMonth(monthPicked+1), yearPicked.toString())
                 changeDateDialog.dismiss()
             }
 

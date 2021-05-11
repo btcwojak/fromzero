@@ -96,7 +96,7 @@
                     android:layout_marginEnd="75dp"
                     android:fontFamily="@font/open_sans_light"
                     android:gravity="center"
-                    android:text="Add valuations for 2 or more months to see a chart."
+                    android:text="@string/add_valuations_for_2_or_more_months_to_see_a_chart"
                     android:textSize="16sp"
                     android:textStyle="italic"
                     android:visibility="visible"
@@ -125,7 +125,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:text="Assets"
+                        android:text="@string/assets"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -137,7 +137,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textSize="16sp"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -172,7 +172,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:text="Liabilities"
+                        android:text="@string/liabilities"
                         android:textColor="@android:color/black"
                         android:textSize="20sp"
                         app:layout_constraintTop_toBottomOf="@id/llAssets" />
@@ -184,7 +184,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textSize="16sp"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -216,7 +216,7 @@
                     android:gravity="center_horizontal"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:text="No assets or liabilities added yet."
+                    android:text="@string/no_assets_or_liabilities_added_yet"
                     android:textSize="16sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -235,7 +235,7 @@
             android:layout_marginBottom="25dp"
             android:background="#99FFFFFF"
             android:fontFamily="@font/open_sans_light"
-            android:text="Add Asset / Liability"
+            android:text="@string/add_asset_liability"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

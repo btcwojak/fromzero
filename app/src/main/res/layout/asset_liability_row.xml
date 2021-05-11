@@ -90,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/open_sans_light"
-                        android:text="Primary residence, purchased 2004 for £110k"
+                        android:text="@string/primary_residence_purchased_2004_for_110k"
                         android:textColor="#212121"
                         android:textSize="14sp"
                         android:textStyle="italic" />

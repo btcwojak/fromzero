@@ -26,7 +26,7 @@
             android:fontFamily="@font/open_sans_light"
             android:foreground="?attr/selectableItemBackground"
             android:padding="10dp"
-            android:text="Add asset"
+            android:text="@string/add_asset"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
@@ -39,7 +39,7 @@
             android:fontFamily="@font/open_sans_light"
             android:foreground="?attr/selectableItemBackground"
             android:padding="10dp"
-            android:text="Add liability"
+            android:text="@string/add_liability"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
@@ -60,7 +60,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/black" />
 
     </LinearLayout>

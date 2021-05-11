@@ -27,7 +27,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="Add a new liability"
+                    android:text="@string/add_a_new_liability"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -53,7 +53,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="Valuation date"
+                    android:text="@string/valuation_date"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -64,7 +64,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:text="19 April 2021"
+                    android:text="@string/_19_april_2021"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
 
@@ -90,7 +90,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="5dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:hint="Name"
+                        android:hint="@string/name"
                         android:inputType="text"
                         android:maxLength="16"
                         android:maxLines="1" />
@@ -118,7 +118,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="5dp"
                         android:fontFamily="@font/open_sans_light"
-                        android:hint="Value"
+                        android:hint="@string/value"
                         android:inputType="numberDecimal" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +138,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/open_sans_light"
-                    android:hint="Notes"
+                    android:hint="@string/notes"
                     android:inputType="text"
                     android:maxLength="48"
                     android:maxLines="1" />
@@ -160,7 +160,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Add"
+                    android:text="@string/add"
                     android:textColor="@color/colorAccent" />
 
                 <TextView
@@ -171,7 +171,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>

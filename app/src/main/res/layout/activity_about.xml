@@ -32,7 +32,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/back_btn_padding"
-                android:contentDescription="Back"
+                android:contentDescription="@string/back"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/open_sans_light"
-                android:text="About FromZero"
+                android:text="@string/about_fromzero"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -83,12 +83,12 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/calculat_logo"
+                        android:id="@+id/fromzeroLogo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@mipmap/ic_launcher"
-                        android:contentDescription="FromZero Logo" />
+                        android:contentDescription="@string/fromzero_logo" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
                             android:layout_gravity="start"
                             android:fontFamily="@font/open_sans_light"
                             android:padding="6dp"
-                            android:text="FromZero"
+                            android:text="@string/fromzero"
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
 
@@ -131,7 +131,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:paddingLeft="25dp"
                     android:paddingRight="25dp"
-                    android:text="FromZero is a simple and easy to use application, allowing you to record monthly valuations for assets and liabilities as well as displaying the change in valuations over time. \n\nSpudg Studios is currently a one-man development studio and this is an early version of the application, so if you have any suggestions for new calculators that could be added or you\'ve found a bug, please send an email below!"
+                    android:text="@string/fromzero_desc"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -146,7 +146,7 @@
                     android:fontFamily="@font/open_sans_light"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="10dp"
-                    android:text="Privacy Policy"
+                    android:text="@string/privacy_policy"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/terms_of_use"
@@ -162,7 +162,7 @@
                     android:fontFamily="@font/open_sans_light"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="10dp"
-                    android:text="Terms of Use"
+                    android:text="@string/terms_of_use"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/rate_btn"
@@ -178,7 +178,7 @@
                     android:fontFamily="@font/open_sans_light"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="10dp"
-                    android:text="Rate on Play Store"
+                    android:text="@string/rate_on_play_store"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/email_btn"
@@ -195,7 +195,7 @@
                     android:fontFamily="@font/open_sans_light"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="10dp"
-                    android:text="Send an email"
+                    android:text="@string/send_an_email"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"

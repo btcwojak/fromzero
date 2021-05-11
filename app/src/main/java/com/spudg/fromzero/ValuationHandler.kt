@@ -122,9 +122,9 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
                 value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
                 date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                val cal = Calendar.getInstance()
-                cal.timeInMillis = date.toLong()
-                if (((cal.get(Calendar.MONTH)) == month) && (cal.get(Calendar.YEAR) == year)) {
+                val cal2 = Calendar.getInstance()
+                cal2.timeInMillis = date.toLong()
+                if (((cal2.get(Calendar.MONTH)) == month) && (cal2.get(Calendar.YEAR) == year)) {
                     val valuation = ValuationModel(
                         id = id,
                         al = al,
@@ -222,44 +222,6 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         } else {
             "0"
         }
-
-
-    }
-
-    fun getLatestValuationModelForAL(alFilter: Int): ValuationModel {
-        val list = ArrayList<ValuationModel>()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_VALUATIONS", null)
-
-        var id: Int
-        var al: Int
-        var value: String
-        var date: String
-
-        if (cursor.moveToFirst()) {
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                al = cursor.getInt(cursor.getColumnIndex(KEY_AL))
-                value = cursor.getString(cursor.getColumnIndex(KEY_VALUE))
-                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                if (alFilter == al) {
-                    val valuation = ValuationModel(
-                        id = id,
-                        al = al,
-                        value = value,
-                        date = date
-                    )
-                    list.add(valuation)
-                }
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-
-        list.sortBy { it.date.toFloat() }
-
-        return list.first()
 
 
     }

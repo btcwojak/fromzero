@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FromZero</string>
+    <string name="version_by_ss">v%1$s, made by Spudg Studios</string>
 </resources>

@@ -71,6 +71,11 @@ class MainActivity : AppCompatActivity() {
             assetLiabilityDialog.show()
         }
 
+        bindingMain.aboutBtn.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 

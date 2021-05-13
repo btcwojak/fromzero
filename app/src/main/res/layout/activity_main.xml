@@ -98,7 +98,6 @@
                     android:gravity="center"
                     android:text="@string/add_valuations_for_2_or_more_months_to_see_a_chart"
                     android:textSize="16sp"
-                    android:textStyle="italic"
                     android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent" />
 

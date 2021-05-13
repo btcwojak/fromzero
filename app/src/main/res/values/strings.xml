@@ -47,7 +47,6 @@
     <string name="steve_matteson_open_sans_light_font">Steve Matteson / Open Sans Light font</string>
     <string name="done">Done</string>
     <string name="update_asset_liability">Update [asset/liability]</string>
-    <string name="note">Note</string>
     <string name="update">Update</string>
     <string name="update_valuation">Update valuation</string>
     <string name="set_asset_value_date">Set asset value date</string>
@@ -60,4 +59,8 @@
     <string name="delete_liability_warn">Are you sure you want to delete this liability?</string>
     <string name="update_asset">Update asset</string>
     <string name="update_liability">Update liability</string>
+    <string name="colour">Colour</string>
+    <string name="choose_a_colour">Choose a colour</string>
+    <string name="colour_preview">Colour Preview</string>
+    <string name="edit_button">Edit Button</string>
 </resources>

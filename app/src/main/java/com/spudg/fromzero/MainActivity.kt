@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bindingAddAsset: DialogAddAssetBinding
     private lateinit var bindingAddLiability: DialogAddLiabilityBinding
+    private lateinit var bindingColourPicker: DialogColourPickerBinding
 
     private lateinit var bindingMYPicker: MonthYearPickerBinding
 
@@ -82,102 +84,104 @@ class MainActivity : AppCompatActivity() {
         val valuationHandler = ValuationHandler(this, null)
         val valuations = valuationHandler.getAllValuations()
 
-        val earliestValuationDate = valuations.minByOrNull { it.date }!!.date
-        val calEarly = Calendar.getInstance()
-        calEarly.timeInMillis = earliestValuationDate.toLong()
-        val earliestMonth = calEarly.get(Calendar.MONTH) + 1
-        val earliestYear = calEarly.get(Calendar.YEAR)
-        val earliestMonthNo = (earliestYear * 12) + earliestMonth
+        if (valuations.size > 0) {
+            val earliestValuationDate = valuations.minByOrNull { it.date }!!.date
+            val calEarly = Calendar.getInstance()
+            calEarly.timeInMillis = earliestValuationDate.toLong()
+            val earliestMonth = calEarly.get(Calendar.MONTH) + 1
+            val earliestYear = calEarly.get(Calendar.YEAR)
+            val earliestMonthNo = (earliestYear * 12) + earliestMonth
 
-        val latestValuationDate = valuations.maxByOrNull { it.date }!!.date
-        val calLate = Calendar.getInstance()
-        calLate.timeInMillis = latestValuationDate.toLong()
-        val latestMonth = calLate.get(Calendar.MONTH)
-        val latestYear = calLate.get(Calendar.YEAR)
-        val latestMonthNo = (latestYear * 12) + latestMonth
+            val latestValuationDate = valuations.maxByOrNull { it.date }!!.date
+            val calLate = Calendar.getInstance()
+            calLate.timeInMillis = latestValuationDate.toLong()
+            val latestMonth = calLate.get(Calendar.MONTH)
+            val latestYear = calLate.get(Calendar.YEAR)
+            val latestMonthNo = (latestYear * 12) + latestMonth
 
-        val numberOfXAxis = latestMonthNo - earliestMonthNo + 2
+            val numberOfXAxis = latestMonthNo - earliestMonthNo + 2
 
-        if (numberOfXAxis > 1) {
-            bindingMain.nwChart.visibility = View.VISIBLE
-            bindingMain.tvNoDataForChart.visibility = View.GONE
-            val xAxisLabels = arrayListOf<String>()
-            val yAxisLabels = arrayListOf<String>()
-            repeat(numberOfXAxis) {
-                if (((it + earliestMonth) % 12).toString().toInt() == 0) {
-                    xAxisLabels.add(Globals.getShortMonth(12))
-                } else {
-                    xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
-                }
-                yAxisLabels.add(valuationHandler.getNetWorthForMonthYear(it + earliestMonthNo - 1))
-            }
-
-            val lineEntries: ArrayList<BarEntry> = arrayListOf()
-
-            for (i in 0 until yAxisLabels.size) {
-                lineEntries.add(BarEntry(i.toFloat(), yAxisLabels[i].toFloat()))
-            }
-
-
-            val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
-            val dataLine = LineData(dataSetLine)
-            dataSetLine.color = R.color.colorAccent
-
-            val chartLine: LineChart = bindingMain.nwChart
-            if (lineEntries.size > 0) {
-                chartLine.data = dataLine
-            }
-
-            dataLine.setDrawValues(false)
-
-            dataSetLine.setDrawFilled(true)
-            dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
-
-            dataSetLine.setDrawCircles(false)
-
-            chartLine.animateY(800)
-            chartLine.setNoDataText("No valuations added yet.")
-            chartLine.setNoDataTextColor(0xff000000.toInt())
-            chartLine.setNoDataTextTypeface(ResourcesCompat.getFont(this, R.font.open_sans_light))
-            chartLine.xAxis.setDrawGridLines(false)
-            chartLine.xAxis.valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return if (value > 0) {
-                        xAxisLabels[value.toInt()]
+            if (numberOfXAxis > 1) {
+                bindingMain.nwChart.visibility = View.VISIBLE
+                bindingMain.tvNoDataForChart.visibility = View.GONE
+                val xAxisLabels = arrayListOf<String>()
+                val yAxisLabels = arrayListOf<String>()
+                repeat(numberOfXAxis) {
+                    if (((it + earliestMonth) % 12).toString().toInt() == 0) {
+                        xAxisLabels.add(Globals.getShortMonth(12))
                     } else {
-                        ""
+                        xAxisLabels.add(Globals.getShortMonth((it + earliestMonth) % 12))
                     }
+                    yAxisLabels.add(valuationHandler.getNetWorthForMonthYear(it + earliestMonthNo - 1))
                 }
+
+                val lineEntries: ArrayList<BarEntry> = arrayListOf()
+
+                for (i in 0 until yAxisLabels.size) {
+                    lineEntries.add(BarEntry(i.toFloat(), yAxisLabels[i].toFloat()))
+                }
+
+
+                val dataSetLine = LineDataSet(lineEntries as List<Entry>?, "")
+                val dataLine = LineData(dataSetLine)
+                dataSetLine.color = R.color.colorAccent
+
+                val chartLine: LineChart = bindingMain.nwChart
+                if (lineEntries.size > 0) {
+                    chartLine.data = dataLine
+                }
+
+                dataLine.setDrawValues(false)
+
+                dataSetLine.setDrawFilled(true)
+                dataSetLine.fillDrawable = ContextCompat.getDrawable(this, R.drawable.gradient)
+
+                dataSetLine.setDrawCircles(false)
+
+                chartLine.animateY(800)
+                chartLine.setNoDataText("No valuations added yet.")
+                chartLine.setNoDataTextColor(0xff000000.toInt())
+                chartLine.setNoDataTextTypeface(
+                    ResourcesCompat.getFont(
+                        this,
+                        R.font.open_sans_light
+                    )
+                )
+                chartLine.xAxis.setDrawGridLines(false)
+                chartLine.axisLeft.setDrawLabels(false)
+                chartLine.axisLeft.setDrawGridLines(false)
+                chartLine.xAxis.setDrawAxisLine(false)
+                chartLine.axisLeft.setDrawAxisLine(false)
+                chartLine.xAxis.setDrawLabels(false)
+                chartLine.setTouchEnabled(false)
+                chartLine.axisRight.isEnabled = false
+                chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                chartLine.legend.isEnabled = false
+                chartLine.description.isEnabled = false
+
+                dataLine.setValueFormatter(object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return if (value > 0) {
+                            val mFormat = DecimalFormat("###,###,##0.00")
+                            mFormat.format(super.getFormattedValue(value).toFloat())
+                        } else {
+                            ""
+                        }
+                    }
+                })
+
+                val l: Legend = chartLine.legend
+                l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+                l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                l.orientation = Legend.LegendOrientation.HORIZONTAL
+                l.setDrawInside(false)
+
+                chartLine.invalidate()
+            } else {
+                bindingMain.nwChart.visibility = View.GONE
+                bindingMain.tvNoDataForChart.visibility = View.VISIBLE
+                Log.e("mainActivity", "Chart not processed as there is not data for two or more months.")
             }
-            chartLine.axisLeft.setDrawLabels(false)
-            chartLine.axisLeft.setDrawGridLines(false)
-            chartLine.xAxis.setDrawAxisLine(false)
-            chartLine.axisLeft.setDrawAxisLine(false)
-            chartLine.xAxis.setDrawLabels(false)
-            chartLine.setTouchEnabled(false)
-            chartLine.axisRight.isEnabled = false
-            chartLine.xAxis.position = XAxis.XAxisPosition.BOTTOM
-            chartLine.legend.isEnabled = false
-            chartLine.description.isEnabled = false
-
-            dataLine.setValueFormatter(object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return if (value > 0) {
-                        val mFormat = DecimalFormat("###,###,##0.00")
-                        mFormat.format(super.getFormattedValue(value).toFloat())
-                    } else {
-                        ""
-                    }
-                }
-            })
-
-            val l: Legend = chartLine.legend
-            l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-            l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            l.orientation = Legend.LegendOrientation.HORIZONTAL
-            l.setDrawInside(false)
-
-            chartLine.invalidate()
         } else {
             bindingMain.nwChart.visibility = View.GONE
             bindingMain.tvNoDataForChart.visibility = View.VISIBLE
@@ -304,7 +308,31 @@ class MainActivity : AppCompatActivity() {
         addDialog.setContentView(view)
         addDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        bindingAddAsset.colourPicker.showOldCenterColor = false
+        var pickerColour = "-8323328"
+        bindingAddAsset.colourPreview.background = pickerColour.toInt().toDrawable()
+
+        bindingAddAsset.colourUpdate.setOnClickListener {
+            val colourDialog = Dialog(this, R.style.Theme_Dialog)
+            colourDialog.setCancelable(false)
+            bindingColourPicker = DialogColourPickerBinding.inflate(layoutInflater)
+            val viewCP = bindingColourPicker.root
+            colourDialog.setContentView(viewCP)
+            colourDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            bindingColourPicker.colourPicker.showOldCenterColor = false
+
+            bindingColourPicker.tvSubmit.setOnClickListener {
+                pickerColour = bindingColourPicker.colourPicker.color.toString()
+                bindingAddAsset.colourPreview.background = pickerColour.toInt().toDrawable()
+                colourDialog.dismiss()
+            }
+
+            bindingColourPicker.tvCancel.setOnClickListener {
+                colourDialog.dismiss()
+            }
+
+            colourDialog.show()
+        }
 
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
@@ -370,7 +398,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ""
             }
-            val colour = bindingAddAsset.colourPicker.color.toString()
+
+            val colour = pickerColour
             val date = calendar.timeInMillis.toString()
 
             if (name.isNotEmpty() && value.isNotEmpty()) {
@@ -416,7 +445,31 @@ class MainActivity : AppCompatActivity() {
         addDialog.setContentView(view)
         addDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        bindingAddLiability.colourPicker.showOldCenterColor = false
+        var pickerColour = "-8323328"
+        bindingAddLiability.colourPreview.background = pickerColour.toInt().toDrawable()
+
+        bindingAddLiability.colourUpdate.setOnClickListener {
+            val colourDialog = Dialog(this, R.style.Theme_Dialog)
+            colourDialog.setCancelable(false)
+            bindingColourPicker = DialogColourPickerBinding.inflate(layoutInflater)
+            val viewCP = bindingColourPicker.root
+            colourDialog.setContentView(viewCP)
+            colourDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            bindingColourPicker.colourPicker.showOldCenterColor = false
+
+            bindingColourPicker.tvSubmit.setOnClickListener {
+                pickerColour = bindingColourPicker.colourPicker.color.toString()
+                bindingAddLiability.colourPreview.background = pickerColour.toInt().toDrawable()
+                colourDialog.dismiss()
+            }
+
+            bindingColourPicker.tvCancel.setOnClickListener {
+                colourDialog.dismiss()
+            }
+
+            colourDialog.show()
+        }
 
         var monthPicked = Calendar.getInstance()[Calendar.MONTH] + 1
         var yearPicked = Calendar.getInstance()[Calendar.YEAR]
@@ -482,7 +535,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ""
             }
-            val colour = bindingAddLiability.colourPicker.color.toString()
+            val colour = pickerColour
             val date = calendar.timeInMillis.toString()
 
             if (name.isNotEmpty() && value.isNotEmpty()) {

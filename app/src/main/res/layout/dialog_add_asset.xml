@@ -33,13 +33,41 @@
 
             </LinearLayout>
 
-            <com.larswerkman.holocolorpicker.ColorPicker
-                android:id="@+id/colourPicker"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/colourPreview"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/colour_preview" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/open_sans_light"
+                    android:text="@string/colour"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/colourUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_edit"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:contentDescription="@string/edit_button" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

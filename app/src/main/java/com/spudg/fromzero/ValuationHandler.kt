@@ -111,6 +111,7 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
         cal.set(Calendar.MONTH, (month))
         cal.set(Calendar.YEAR, year)
 
+        /*
         var id: Int
         var al: Int
         var value: String
@@ -135,6 +136,31 @@ class ValuationHandler(context: Context, factory: SQLiteDatabase.CursorFactory?)
                 }
             } while (cursor.moveToNext())
         }
+
+         */
+
+        val allValuations = getAllValuations()
+        val allALs = arrayListOf<Int>()
+
+        for (valuation in allValuations) {
+            if (!allALs.contains(valuation.al)) {
+                allALs.add(valuation.al)
+            }
+        }
+
+        for (alItem in allALs) {
+            val relevantVals = ArrayList<ValuationModel>()
+            val allVals = getValuationsForAL(alItem)
+            for (valuation in allVals) {
+                if (valuation.date.toLong() <= cal.timeInMillis) {
+                    relevantVals.add(valuation)
+                }
+            }
+            if (relevantVals.size > 0) {
+                valuations.add(relevantVals.sortedBy { it.date }.last())
+            }
+        }
+
 
         var rollingNetWorth = 0F
 

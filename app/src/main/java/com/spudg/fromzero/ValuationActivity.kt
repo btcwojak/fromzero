@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -31,6 +32,7 @@ class ValuationActivity : AppCompatActivity() {
     private lateinit var bindingDeleteValuation: DialogDeleteValuationBinding
     private lateinit var bindingUpdateAL: DialogUpdateAlBinding
     private lateinit var bindingDeleteAL: DialogDeleteAlBinding
+    private lateinit var bindingColourPicker: DialogColourPickerBinding
 
     private lateinit var bindingMYPicker: MonthYearPickerBinding
 
@@ -65,7 +67,6 @@ class ValuationActivity : AppCompatActivity() {
     }
 
     private fun setUpChart() {
-
 
         if (getValuationList(Globals.alSelected).size > 1) {
             bindingValuation.valuationChart.visibility = View.VISIBLE
@@ -197,10 +198,35 @@ class ValuationActivity : AppCompatActivity() {
         val alHandler = ALHandler(this, null)
         val originalAL = alHandler.getAL(Globals.alSelected)
 
+        var pickerColour = originalAL.colour
+
         bindingUpdateAL.etName.setText(originalAL.name)
         bindingUpdateAL.etNote.setText(originalAL.note)
-        bindingUpdateAL.colourPicker.color = originalAL.colour.toInt()
-        bindingUpdateAL.colourPicker.showOldCenterColor = false
+        bindingUpdateAL.colourPreview.background = pickerColour.toInt().toDrawable()
+
+        bindingUpdateAL.colourUpdate.setOnClickListener {
+            val colourDialog = Dialog(this, R.style.Theme_Dialog)
+            colourDialog.setCancelable(false)
+            bindingColourPicker = DialogColourPickerBinding.inflate(layoutInflater)
+            val viewCP = bindingColourPicker.root
+            colourDialog.setContentView(viewCP)
+            colourDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            bindingColourPicker.colourPicker.showOldCenterColor = false
+
+            bindingColourPicker.tvSubmit.setOnClickListener {
+                pickerColour = bindingColourPicker.colourPicker.color.toString()
+                bindingUpdateAL.colourPreview.background = pickerColour.toInt().toDrawable()
+                colourDialog.dismiss()
+            }
+
+            bindingColourPicker.tvCancel.setOnClickListener {
+                colourDialog.dismiss()
+            }
+
+            colourDialog.show()
+        }
+
 
         if (originalAL.al == 1) {
             bindingUpdateAL.updateALTitle.text = getString(R.string.update_asset)
@@ -211,7 +237,7 @@ class ValuationActivity : AppCompatActivity() {
         bindingUpdateAL.tvUpdate.setOnClickListener {
             val name = bindingUpdateAL.etName.text.toString()
             val note = bindingUpdateAL.etNote.text.toString()
-            val colour = bindingUpdateAL.colourPicker.color.toString()
+            val colour = pickerColour
             val updatedAL = ALModel(originalAL.id, originalAL.al, name, note, colour)
             if (name.isNotEmpty()) {
                 alHandler.updateAL(updatedAL)

@@ -5,7 +5,7 @@
     <string name="about_fromzero">About FromZero</string>
     <string name="fromzero_logo">FromZero Logo</string>
     <string name="fromzero">FromZero</string>
-    <string name="fromzero_desc">FromZero is a simple and easy to use application, allowing you to record monthly valuations for assets and liabilities as well as displaying the change in valuations over time. \n\nSpudg Studios is currently a one-man development studio and this is an early version of the application, so if you have any suggestions for new calculators that could be added or you\'ve found a bug, please send an email below!</string>
+    <string name="fromzero_desc">FromZero is a simple and easy to use application, allowing you to record monthly valuations for assets and liabilities as well as displaying the change in valuations over time. \n\nSpudg Studios is currently a one-man development studio and this is an early version of the application, so if you have any suggestions for new features that could be added or you\'ve found a bug, please send an email below!</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="rate_on_play_store">Rate on Play Store</string>

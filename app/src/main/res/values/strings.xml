@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">FromZero</string>
-    <string name="version_by_ss">v%1$s, made by Spudg Studios</string>
+    <string name="version_by_ss">v%1$s, made by spudg</string>
     <string name="back">Back</string>
     <string name="about_fromzero">About FromZero</string>
     <string name="fromzero_logo">FromZero Logo</string>
     <string name="fromzero">FromZero</string>
-    <string name="fromzero_desc">FromZero is a simple and easy to use application, allowing you to record monthly valuations for assets and liabilities as well as displaying the change in valuations over time. \n\nSpudg Studios is currently a one-man development studio and this is an early version of the application, so if you have any suggestions for new features that could be added or you\'ve found a bug, please send an email below!</string>
+    <string name="fromzero_desc">FromZero is a simple and easy to use application, allowing you to record monthly valuations for assets and liabilities as well as displaying the change in valuations over time. \n\nspudg is currently a one-man development studio and this is an early version of the application, so if you have any suggestions for new features that could be added or you\'ve found a bug, please leave a review on Google Play!</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="rate_on_play_store">Rate on Play Store</string>
@@ -38,7 +38,7 @@
     <string name="delete">Delete</string>
     <string name="delete_valuation">Delete valuation</string>
     <string name="are_you_sure_you_want_to_delete_this_valuation">Are you sure you want to delete this valuation?</string>
-    <string name="copyright_2021_spudg_studios">Copyright © 2021 Spudg Studios</string>
+    <string name="copyright_2021_spudg">Copyright © 2022 spudg</string>
     <string name="all_rights_reserved_text">All rights reserved. By using this application, you agree that the creator of this application is not responsible for any losses or damages.</string>
     <string name="philjay_mpandroidchart">PhilJay/MPAndroidChart</string>
     <string name="licensed_under_the_apache_license_2_0">Licensed under the Apache License 2.0</string>
